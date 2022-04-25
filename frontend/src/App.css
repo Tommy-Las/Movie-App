@@ -1,4 +1,38 @@
 .poster_column{
     margin: auto;
     text-align: center;
+    margin-top: 30px;
+}
+.info_column{
+    margin: auto;
+    margin-top: 15px;
+}
+.carousel{
+    display: block;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    /* margin-left: 125px;
+    margin-top:30px; */
+    /* width: 450px; */
+}
+.navbar{
+    background-color: #161944;
+}
+
+body{
+    color: rgb(255, 255, 255);
+    background-color: #0c111f;
+    background-image: url(./components/rocky.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+}
+
+.home_box{
+    margin: 400px 50px 100px 50px;
+    text-align: center;
+    background-color: #161944;
+    opacity: 0.95;
 }
