@@ -2764,7 +2764,49 @@ let top250_data = {
     "errorMessage": ""
   }
 
-// will store the MongoDB database collection after it is loaded (see bottom of file)
+let search_data = {
+    "searchType": "Movie",
+    "expression": "inception 2010",
+    "results": [
+      {
+        "id": "tt1375666",
+        "resultType": "Title",
+        "image": "https://imdb-api.com/images/original/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_Ratio0.6800_AL_.jpg",
+        "title": "Inception",
+        "description": "(2010)"
+      },
+      {
+        "id": "tt1790736",
+        "resultType": "Title",
+        "image": "https://imdb-api.com/images/original/MV5BMjE0NGIwM2EtZjQxZi00ZTE5LWExN2MtNDBlMjY1ZmZkYjU3XkEyXkFqcGdeQXVyNjMwNzk3Mjk@._V1_Ratio0.6800_AL_.jpg",
+        "title": "Inception: Motion Comics",
+        "description": "(2010 Video)"
+      },
+      {
+        "id": "tt5295990",
+        "resultType": "Title",
+        "image": "https://imdb-api.com/images/original/MV5BZGFjOTRiYjgtYjEzMS00ZjQ2LTkzY2YtOGQ0NDI2NTVjOGFmXkEyXkFqcGdeQXVyNDQ5MDYzMTk@._V1_Ratio0.6800_AL_.jpg",
+        "title": "Inception: Jump Right Into the Action",
+        "description": "(2010 Video)"
+      },
+      {
+        "id": "tt1686778",
+        "resultType": "Title",
+        "image": "https://imdb-api.com/images/original/nopicture.jpg",
+        "title": "Inception: 4Movie Premiere Special",
+        "description": "(2010 TV Movie)"
+      },
+      {
+        "id": "tt12960252",
+        "resultType": "Title",
+        "image": "https://imdb-api.com/images/original/nopicture.jpg",
+        "title": "Inception Premiere",
+        "description": "(2010)"
+      }
+    ],
+    "errorMessage": ""
+  }
+  // will store the MongoDB database collection after it is loaded (see bottom of file)
 let collection = null;
 
 app.use(function (req, res, next) {
@@ -2839,6 +2881,19 @@ app.get("/top250", (req, res) => {
     // axios.get("https://imdb-api.com/en/API/Top250Movies/k_3o4z5xk9", {}).then((response) => {
     //     console.dir(response)
     //     res.status(200).send(response)
+    // }).catch((error) => {
+    //     console.dir(error)
+    //     res.status(500).send(error)
+    // })
+})
+
+app.get("/search/:movie_name" , (req, res) => {
+    var movie_name = req.params.movie_name;
+    console.log(movie_name)
+    res.status(200).send(search_data)
+    // axios.get("https://imdb-api.com/en/API/SearchMovie/k_3o4z5xk9/" + movie_name, {}).then((response) => {
+    //     console.dir(response)
+    //     res.status(200).send(response.data)
     // }).catch((error) => {
     //     console.dir(error)
     //     res.status(500).send(error)

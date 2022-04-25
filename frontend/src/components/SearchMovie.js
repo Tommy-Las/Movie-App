@@ -1,31 +1,50 @@
 import {useLocation,Link} from 'react-router-dom'
-import {Card, Button, Figure} from 'react-bootstrap'
-import image from "./joker.jpg"
+import {Figure} from 'react-bootstrap'
+import { useEffect, useState} from 'react'
+import axios from 'axios'
 
 function SearchMovie(){
 
-    let movie = useLocation().state.movie
-    console.log(movie)
+    let movie_searched = useLocation().state.movie
+    console.log(movie_searched)
 
-    let handleClick = () => {
-        console.log('image clicked')
-    }
-    return(
-        <div>
-            <h1>{"Movie Searched: " + movie}</h1>
-                <Link to={"/movie"} state={{id:1234}}>
+    let [movies, setMovies] = useState('')
+    var movies_array = []
+
+    const sendRequest = () => {
+        axios.get("http://localhost:5888/search/" + movie_searched, {}).then((response) => {
+            console.dir(response)
+            movies_array = response.data.results.map((movie) => {
+                return <div key={movie.id}>
+                <Link to={"/movie"} state={{id:movie.id}}>
                 <Figure>
                 <Figure.Image
                     width={171}
                     height={180}
                     alt="171x180"
-                    src={image}
+                    src={movie.image}
                 />
                 <Figure.Caption>
-                    Joker
+                    {movie.title}
                 </Figure.Caption>
                 </Figure>
-                </Link>
+                </Link></div>
+            })
+            setMovies(movies_array)
+
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }
+    useEffect(() => {
+        console.log('in UseEffect')
+        sendRequest()
+    }, [])
+
+    return(
+        <div>
+            <h1>{"Movie Searched: " + movie_searched}</h1>
+            {movies}
         </div>
     );
 }
