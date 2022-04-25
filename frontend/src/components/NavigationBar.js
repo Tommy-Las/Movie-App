@@ -16,7 +16,7 @@ const NavigationBar = () => {
 
   return (
     <>
-      <Navbar collapseOnSelect expand='sm' variant='dark' class="navbar">
+      <Navbar collapseOnSelect expand='sm' variant='dark' className="navbar">
         <Container>
           <Navbar.Brand as={Link} to='/'>Bear Movies</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-bar"/>

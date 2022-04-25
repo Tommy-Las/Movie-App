@@ -5,8 +5,8 @@ import {Container} from 'react-bootstrap';
  * @returns the whole home html page
  */
 function Home(){
+    console.log("In home")
     return (
-        <body className='home_page'>
             <div>
             <Container className="home_box border">
                 <h1>Welcome to Bear Movies!</h1>
@@ -16,7 +16,6 @@ function Home(){
             </Container>
                    
             </div>
-        </body>
         
     );
 }
