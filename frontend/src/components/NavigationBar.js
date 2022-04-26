@@ -19,8 +19,8 @@ const NavigationBar = () => {
       <Navbar collapseOnSelect expand='sm' variant='dark' className="navbar">
         <Container>
           <Navbar.Brand as={Link} to='/'>Bear Movies</Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-bar"/>
-          <Navbar.Collapse id ='responsive-navbar-nav'>
+          <Navbar.Toggle/>
+          <Navbar.Collapse>
             <Nav>
               <Nav.Link as={Link} to='/watchlist'>My Watchlist</Nav.Link>
               <Nav.Link as={Link} to='/top250'>Top 250 Movies</Nav.Link>

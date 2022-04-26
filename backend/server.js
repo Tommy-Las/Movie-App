@@ -3367,7 +3367,7 @@ app.use(function (req, res, next) {
 app.get("/top250", (req, res) => {
     res.status(200).send(top250_data)
     //API call for top 250 movies
-    // axios.get("https://imdb-api.com/en/API/Top250Movies/k_3o4z5xk9", {}).then((response) => {
+    // axios.get("https://imdb-api.com/en/API/Top250Movies/+ process.env.IMBD_KEY, {}).then((response) => {
     //     console.dir(response)
     //     res.status(200).send(response)
     // }).catch((error) => {
@@ -3380,7 +3380,7 @@ app.get("/search/:movie_name" , (req, res) => {
     var movie_name = req.params.movie_name;
     console.log(movie_name)
     res.status(200).send(search_data)
-    // axios.get("https://imdb-api.com/en/API/SearchMovie/k_3o4z5xk9/" + movie_name, {}).then((response) => {
+    // axios.get("https://imdb-api.com/en/API/SearchMovie/" + process.env.IMBD_KEY + "/" + movie_name, {}).then((response) => {
     //     console.dir(response)
     //     res.status(200).send(response.data)
     // }).catch((error) => {
@@ -3392,7 +3392,7 @@ app.get("/search/:movie_name" , (req, res) => {
 app.get("/movie/:movie_id" , (req, res) => {
     var movie_id = req.params.movie_id;
     res.status(200).send(title_data)
-    // axios.get("https://imdb-api.com/en/API/Title/k_3o4z5xk9/" + movie_id, {}).then((response) => {
+    // axios.get("https://imdb-api.com/en/API/Title/" + process.env.IMBD_KEY + "/" + movie_id, {}).then((response) => {
     //     console.dir(response)
     //     res.status(200).send(response.data)
     // }).catch((error) => {
@@ -3404,7 +3404,7 @@ app.get("/movie/:movie_id" , (req, res) => {
 app.get("/images/:movie_id" , (req, res) => {
     var movie_id = req.params.movie_id;
     res.status(200).send(image_data)
-    // axios.get("https://imdb-api.com/en/API/Images/k_3o4z5xk9/" + movie_id + "/Short", {}).then((response) => {
+    // axios.get("https://imdb-api.com/en/API/Images/" + process.env.IMBD_KEY + "/" + movie_id + "/Short", {}).then((response) => {
     //     console.dir(response)
     //     res.status(200).send(response.data)
     // }).catch((error)=>{
@@ -3414,6 +3414,8 @@ app.get("/images/:movie_id" , (req, res) => {
 })
 
 //DATABASE FUNCTIONS
+
+//collection.insertOne()
 
 //START THE SERVER
 app.listen(process.env.PORT, () => {

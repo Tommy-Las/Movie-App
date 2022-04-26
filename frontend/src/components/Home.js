@@ -5,10 +5,10 @@ import {Container} from 'react-bootstrap';
  * @returns the whole home html page
  */
 function Home(){
-    console.log("In home")
+    console.log("In Home")
     return (
             <div>
-            <Container className="home_box border">
+            <Container className="home_box">
                 <h1>Welcome to Bear Movies!</h1>
                 <p>You can search for your favorite movie using the search bar on top, or view the Top 250 movies of all time</p>
                 <p>Keep track of the movies you would like to watch in the future by adding them to your watchlist!</p>

@@ -2,18 +2,14 @@ import {useLocation} from 'react-router-dom'
 import {Container, Col, Figure, Row, Carousel} from 'react-bootstrap'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-//import image from "./joker.jpg"
-import image1 from "./image1.jpg"
-import image2 from "./image2.jpg"
-import image3 from "./image3.jpg"
 
 function SingleMovie(){
     //console.dir(useLocation())
     
     let movie_id = useLocation().state.movie_id
-    console.log(movie_id)
+    console.log("The movie id is: " + movie_id)
 
-
+    //all variables
     let [fullTitle, setFullTitle] = useState('')
     let [director, setDirector] = useState('')
     let [stars, setStars] = useState('')
@@ -22,17 +18,14 @@ function SingleMovie(){
     let [description, setDescription] = useState('')
     let [poster, setPoster] = useState('')
     let [minutes, setMinutes] = useState('')
-
     let [images, setImages] = useState('')
 
-    var images_array = []
-
-
+    const addToWatchlist = () =>{
+        
+    }
     
     const sendRequest = () => {
         axios.get("http://localhost:5888/movie/" + movie_id, {}).then((response)=>{
-            console.dir(response.data);
-
             setFullTitle(response.data.fullTitle);
             setDirector(response.data.directors);
             setStars(response.data.stars);
@@ -46,9 +39,7 @@ function SingleMovie(){
         })
         
         axios.get("http://localhost:5888/images/" + movie_id, {}).then((response)=>{
-            console.log("images")
-            console.dir(response)
-            images_array = response.data.items.map((image_element) => {
+            var images_array = response.data.items.map((image_element) => {
                 return(<Carousel.Item>
                     <img
                     className="d-block w-100"
@@ -64,7 +55,6 @@ function SingleMovie(){
     }
 
     useEffect(() => {
-        console.log('in UseEffect')
         sendRequest()
     }, [])
 
@@ -85,6 +75,7 @@ function SingleMovie(){
                         </Figure>
                     </Col>
                     <Col className="info_column">
+                        <button onClick={addToWatchlist}>ADD TO MY WATCHLIST</button>
                         <h1>{fullTitle}</h1>
                         <h4>{"Directed by " + director}</h4><br/>
                         <p>{"Main Cast: " + stars}</p>

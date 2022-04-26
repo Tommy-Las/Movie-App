@@ -13,9 +13,6 @@
     margin-left: auto;
     margin-right: auto;
     width: 50%;
-    /* margin-left: 125px;
-    margin-top:30px; */
-    /* width: 450px; */
 }
 .navbar{
     background-color: #171937;
@@ -24,23 +21,23 @@
 body{
     color: rgb(255, 255, 255);
     background-color: #101318;
-    /* background-image: url(./components/rocky.png);
-    background-repeat: no-repeat;
-    background-size: cover; */
-    
 }
 
 .home_box{
-    margin: 400px 50px 100px 50px;
+    margin: 365px 50px 100px 50px;
     text-align: center;
     background-color: #171937;
-    opacity: 0.95;
 }
 
 .movies_row{
     margin-left: 35px;
     margin-bottom:5px;
 }
+
+.movie{
+    padding-left: 55px;
+}
+
 
 .top250_title{
     text-align: center;
