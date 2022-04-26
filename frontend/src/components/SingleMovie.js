@@ -1,13 +1,72 @@
-import {useLocation, useParams} from 'react-router-dom'
-import {Container, Image, Col, Figure, Row, Carousel} from 'react-bootstrap'
-import image from "./joker.jpg"
+import {useLocation} from 'react-router-dom'
+import {Container, Col, Figure, Row, Carousel} from 'react-bootstrap'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+//import image from "./joker.jpg"
 import image1 from "./image1.jpg"
 import image2 from "./image2.jpg"
 import image3 from "./image3.jpg"
 
 function SingleMovie(){
     //console.dir(useLocation())
-    let id = useLocation().state.id
+    
+    let movie_id = useLocation().state.movie_id
+    console.log(movie_id)
+
+
+    let [fullTitle, setFullTitle] = useState('')
+    let [director, setDirector] = useState('')
+    let [stars, setStars] = useState('')
+    let [rating, setRating] = useState('')
+    let [genre, setGenre] = useState('')
+    let [description, setDescription] = useState('')
+    let [poster, setPoster] = useState('')
+    let [minutes, setMinutes] = useState('')
+
+    let [images, setImages] = useState('')
+
+    var images_array = []
+
+
+    
+    const sendRequest = () => {
+        axios.get("http://localhost:5888/movie/" + movie_id, {}).then((response)=>{
+            console.dir(response.data);
+
+            setFullTitle(response.data.fullTitle);
+            setDirector(response.data.directors);
+            setStars(response.data.stars);
+            setRating(response.data.imDbRating);
+            setGenre(response.data.genres);
+            setPoster(response.data.image);
+            setMinutes(response.data.runtimeMins);
+            setDescription(response.data.plot);
+        }).catch((err)=>{
+            console.dir(err)
+        })
+        
+        axios.get("http://localhost:5888/images/" + movie_id, {}).then((response)=>{
+            console.log("images")
+            console.dir(response)
+            images_array = response.data.items.map((image_element) => {
+                return(<Carousel.Item>
+                    <img
+                    className="d-block w-100"
+                    src={image_element.image}
+                    alt={image_element.title}
+                    />
+                </Carousel.Item>)
+            })
+            setImages(images_array)
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }
+
+    useEffect(() => {
+        console.log('in UseEffect')
+        sendRequest()
+    }, [])
 
     return(
         <div>
@@ -18,45 +77,22 @@ function SingleMovie(){
                             <Figure.Image
                                 width={350}
                                 height={350}
-                                src={image}
+                                src={poster}
                             />
                             <Figure.Caption>
-                                180 mins
+                                {minutes}
                             </Figure.Caption>
                         </Figure>
                     </Col>
                     <Col className="info_column">
-                        <h1>Joker<span>(2000)</span></h1>
-                        <h4>Directed by Santiago Gonzalez</h4><br/>
-                        <p>Main Cast: Tommy, Octa, Licha, Gonzo</p>
-                        <p>Genre: Action</p>
-                        <p>IMBd Rating: 3.2</p>
-                        <p>A mentally troubled stand-up comedian embarks on a downward spiral that leads to the creation of an iconic villain.</p>
+                        <h1>{fullTitle}</h1>
+                        <h4>{"Directed by " + director}</h4><br/>
+                        <p>{"Main Cast: " + stars}</p>
+                        <p>{"Genre: " + genre}</p>
+                        <p>{"IMBd Rating: " + rating}</p>
+                        <p>{description}</p>
                             <Carousel fade className = "carousel">
-                                <Carousel.Item>
-                                    <img
-                                    fluid
-                                    className="d-block w-100"
-                                    src={image1}
-                                    alt="First slide"
-                                    />
-                                </Carousel.Item>
-                                <Carousel.Item>
-                                    <img
-                                    fluid
-                                    className="d-block w-100"
-                                    src={image2}
-                                    alt="Second slide"
-                                    />
-                                </Carousel.Item>
-                                <Carousel.Item>
-                                    <img
-                                    fluid
-                                    className="d-block w-100"
-                                    src={image3}
-                                    alt="Third slide"
-                                    />
-                                </Carousel.Item>
+                                {images}
                             </Carousel>
                     </Col>
                 </Row>
