@@ -44,3 +44,9 @@ body{
     margin-bottom: 25px;
     margin-top:25px;
 }
+
+.google_button {
+    display: flex;
+    justify-content: center;
+    margin-top: 250px;
+}

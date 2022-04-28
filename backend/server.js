@@ -8,6 +8,19 @@ const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 const { default: axios } = require('axios');
 
+// Import the functions you need from the SDKs you need
+// import { initializeApp } from "firebase/app";
+// import { GoogleAuthProvider } from "firebase/auth";
+
+// // Your web app's Firebase configuration
+// const firebaseConfig = process.env.FIREBASE_CREDENTIALS
+// // Initialize Firebase
+// const firebase_app = initializeApp(firebaseConfig);
+
+// const provider = new GoogleAuthProvider();
+
+
+
 let top250_data = {
     "items": [
       {

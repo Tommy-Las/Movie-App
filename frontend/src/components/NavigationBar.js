@@ -1,13 +1,24 @@
 import { Outlet, Link, useNavigate} from "react-router-dom";
-import { Navbar, Nav, Container, NavDropdown, Form, FormControl, Button} from 'react-bootstrap';
+import { Navbar, Nav, Container, FormControl, Button} from 'react-bootstrap';
 import { useState} from "react";
-import SearchMovie from "./SearchMovie";
+import { signOut, getAuth } from "firebase/auth";
 
 const NavigationBar = () => {
 
   let [searchValue, setSearchValue] = useState("")
   const navigate = useNavigate();
   
+  const auth = getAuth();
+
+  const logOut = () => {
+    signOut(auth).then(() => {
+        // Sign-out successful.
+        console.log('User logged out successfuly')
+    }).catch((error) => {
+        // An error happened.
+        console.log('Cannot log user out')
+    });
+}
   const searchMovieRequest = (e) => {
     e.preventDefault()
     console.log('searched movie: ' + searchValue)
@@ -24,6 +35,7 @@ const NavigationBar = () => {
             <Nav>
               <Nav.Link as={Link} to='/watchlist'>My Watchlist</Nav.Link>
               <Nav.Link as={Link} to='/top250'>Top 250 Movies</Nav.Link>
+              <Button onClick={logOut}>LOG OUT FRIEND</Button>
             </Nav>
             <Nav>
               <FormControl placeholder="Search"
