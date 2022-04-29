@@ -3,11 +3,36 @@ import {Container, Col, Figure, Row, Carousel} from 'react-bootstrap'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import addMovieWatchlist from './addMovieWatchlist'
+import removeMovieWatchlist from './removeMovieWatchlist'
+
 import { propTypes } from 'react-bootstrap/esm/Image'
 
 function SingleMovie(props){
+
+    
     let user_id = props.user_id
     let movie_id = useLocation().state.movie_id
+
+    let [inWatchlist, setInWatchlist] = useState(false)
+    let [watchlistButton, setWatchlistButton] = useState('')
+
+    
+    useEffect(()=>{
+        if(inWatchlist){
+            setWatchlistButton(<button onClick={() => {removeMovieWatchlist(user_id, movie_id)}}>
+                REMOVE FROM MY WATCHLIST
+                </button>)
+        } else{
+            setWatchlistButton(<button onClick={() => {addMovieWatchlist(user_id, movie_id, poster)}}>
+                ADD TO MY WATCHLIST
+                </button>)
+        }
+    }, [])
+
+    const isInWatchlist = () =>{
+        
+    }
+
     console.log("The movie id is: " + movie_id)
     //all variables
     let [fullTitle, setFullTitle] = useState('')
@@ -71,7 +96,7 @@ function SingleMovie(props){
                         </Figure>
                     </Col>
                     <Col className="info_column">
-                        <button onClick={() => {addMovieWatchlist(user_id, movie_id, poster)}}>ADD TO MY WATCHLIST</button>
+                        {inWatchlist}
                         <h1>{fullTitle}</h1>
                         <h4>{"Directed by " + director}</h4><br/>
                         <p>{"Main Cast: " + stars}</p>

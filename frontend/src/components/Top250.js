@@ -34,7 +34,7 @@ function Top250(){
 
     return(
         <div>
-            <h1 className="top250_title">Top 250 Movies of All Time</h1>
+            <h1 className="page_title">Top 250 Movies of All Time</h1>
             {movies}   
         </div>
     );

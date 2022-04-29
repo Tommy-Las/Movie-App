@@ -3480,7 +3480,7 @@ app.post("/watchlist/:uid", (req, res) => {
   })
 })
 
-app.get("/watchlist/:uid" , (req, res) => {
+app.get("/watchlist/:uid", (req, res) => {
   let filter = {
     _id: req.params.uid
   }
@@ -3490,7 +3490,39 @@ app.get("/watchlist/:uid" , (req, res) => {
   });
 })
 
+app.get("/watchlist_check", (req, res) => {
+  let filter = {
+    _id: req.query.uid,
+    movies: {$elemMatch : {movie_id : req.query.movie_id}}
+  }
+  collection.find(filter).toArray(function(err, array) {
+    if (err) throw err;
+    if(array){
+      return res.status(200).send(true);
+    }
+    else{
+      return res.status(200).send(false);
+    }
+    
+  });
+})
+
 //collection.insertOne()
+app.delete("/watchlist/remove", (req, res) => {
+  let filter = {
+    _id: req.params.uid
+  }
+  let new_vals = { $pull: { 'movies': {movie_id: req.query.movie_id, image: req.query.image}}}
+  collection.updateOne(filter, new_vals, (err, response) =>{
+    if(err){
+      console.log("movie was not removed")
+      return res.status(404).send(err)
+    }else{
+      console.log("movie removed successfully")
+      return res.status(200).send(response);
+    }
+  })
+})
 
 //START THE SERVER
 app.listen(process.env.PORT, () => {
