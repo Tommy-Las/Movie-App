@@ -13,6 +13,7 @@ const NavigationBar = () => {
   const logOut = () => {
     signOut(auth).then(() => {
         // Sign-out successful.
+        navigate("/")
         console.log('User logged out successfuly')
     }).catch((error) => {
         // An error happened.

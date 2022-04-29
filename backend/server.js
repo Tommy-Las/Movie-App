@@ -8,16 +8,13 @@ const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 const { default: axios } = require('axios');
 
-// Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// import { GoogleAuthProvider } from "firebase/auth";
+let dbo = ''
 
-// // Your web app's Firebase configuration
-// const firebaseConfig = process.env.FIREBASE_CREDENTIALS
-// // Initialize Firebase
-// const firebase_app = initializeApp(firebaseConfig);
-
-// const provider = new GoogleAuthProvider();
+// const firebase_app = require('firebase-admin/app');
+// const firebase = require('firebase-admin');
+// firebase_app.initializeApp({
+//     firebase: firebase_app.applicationDefault(),
+// })
 
 
 
@@ -3365,13 +3362,38 @@ app.use(function (req, res, next) {
     }
   });
 
+  //Firebase Authentication 
+
+//   function checkAuth(req, res, next) {
+//     function throwAuthError(message, status = 403) {
+//         res.status(status).send({ message: "Auth Error: " + message });
+//     }
+//     let token = req.headers.authorization;
+//     if (!token) {
+//         return throwAuthError("Missing authorization header", 401);
+//     }
+//     firebase.auth().verifyIdToken(token)
+//         .then(decoded => {
+//             // attach auth info to request:
+//             req.user = decoded;
+
+//             // continue on
+//             next();
+//         })
+//         .catch(err => {
+//             console.log(err.message);
+//             throwAuthError("Invalid ID token", 403);
+//         })
+// }
+
   //connect to database globally
   MongoClient.connect(`mongodb://${process.env.MONGODB_HOSTNAME}:${process.env.MONGODB_PORT}/`, (err, client) => {
     if (err) {
         console.error("Unable to connect to MongoDB: ", err.message);
         throw err; // exits program - mongo error
     } else {
-        let dbo = client.db(process.env.MONGODB_DATABASE);
+        console.log('connected to database')
+        dbo = client.db(process.env.MONGODB_DATABASE);
         collection = dbo.collection(process.env.MONGODB_COLLECTION);
     }
 })
@@ -3427,6 +3449,46 @@ app.get("/images/:movie_id" , (req, res) => {
 })
 
 //DATABASE FUNCTIONS
+app.post("/watchlist/add", (req, res) => {
+  let filter = {
+    "_id": req.query._id
+  }
+  let new_vals = { $push: { 'movies': {movie_id: req.query.movie_id, image: req.query.image}}}
+  
+  collection.updateOne(filter, new_vals, (err, response) =>{
+    if(err){
+      console.log("cannot add movie")
+      return res.status(404).send(err)
+    }else{
+      console.log("movie added successfully")
+      return res.status(200).send(response);
+    }
+  })
+})
+
+app.post("/watchlist/:uid", (req, res) => {
+  let obj = {
+    "_id": req.params.uid,
+  }
+  collection.insertOne(obj, (err, response) =>{
+    if(err){
+      console.log("user already has a watchlist")
+    }else{
+      console.log("user " + obj._id + "created successfully")
+      return res.status(200).send(response);
+    }
+  })
+})
+
+app.get("/watchlist/:uid" , (req, res) => {
+  let filter = {
+    _id: req.params.uid
+  }
+  collection.find(filter).toArray(function(err, array) {
+    if (err) throw err;
+    return res.status(200).send(array);
+  });
+})
 
 //collection.insertOne()
 

@@ -1,10 +1,18 @@
+import { useEffect } from 'react';
 import {Container} from 'react-bootstrap';
+import createUserWatchlist from './createUserWatchlist.js';
+
 /**
  * Home page that displays a title and my information
  * 
  * @returns the whole home html page
  */
-function Home(){
+
+ 
+function Home(props){
+
+    createUserWatchlist(props.user_id)
+
     console.log("In Home")
     return (
             <div>

@@ -2,13 +2,13 @@ import {useLocation} from 'react-router-dom'
 import {Container, Col, Figure, Row, Carousel} from 'react-bootstrap'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import addMovieWatchlist from './addMovieWatchlist'
+import { propTypes } from 'react-bootstrap/esm/Image'
 
-function SingleMovie(){
-    //console.dir(useLocation())
-    
+function SingleMovie(props){
+    let user_id = props.user_id
     let movie_id = useLocation().state.movie_id
     console.log("The movie id is: " + movie_id)
-
     //all variables
     let [fullTitle, setFullTitle] = useState('')
     let [director, setDirector] = useState('')
@@ -19,10 +19,6 @@ function SingleMovie(){
     let [poster, setPoster] = useState('')
     let [minutes, setMinutes] = useState('')
     let [images, setImages] = useState('')
-
-    const addToWatchlist = () =>{
-        
-    }
     
     const sendRequest = () => {
         axios.get("http://localhost:5888/movie/" + movie_id, {}).then((response)=>{
@@ -40,7 +36,7 @@ function SingleMovie(){
         
         axios.get("http://localhost:5888/images/" + movie_id, {}).then((response)=>{
             var images_array = response.data.items.map((image_element) => {
-                return(<Carousel.Item>
+                return(<Carousel.Item key={image_element.image}>
                     <img
                     className="d-block w-100"
                     src={image_element.image}
@@ -75,7 +71,7 @@ function SingleMovie(){
                         </Figure>
                     </Col>
                     <Col className="info_column">
-                        <button onClick={addToWatchlist}>ADD TO MY WATCHLIST</button>
+                        <button onClick={() => {addMovieWatchlist(user_id, movie_id, poster)}}>ADD TO MY WATCHLIST</button>
                         <h1>{fullTitle}</h1>
                         <h4>{"Directed by " + director}</h4><br/>
                         <p>{"Main Cast: " + stars}</p>

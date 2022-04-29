@@ -8,10 +8,9 @@ function Top250(){
     
     const sendRequest = () => {
         axios.get("http://localhost:5888/top250", {}).then((response) => {
-            console.dir(response)
             var movies_array = response.data.items.map((movie) => {
                 return (
-                <Link to={"/movie"} state={{movie_id:movie.id}}>
+                <Link to={"/movie"} state={{movie_id:movie.id}} key={movie.id}>
                 <Figure className="movie">
                 <Figure.Image
                     className="border border-light"
