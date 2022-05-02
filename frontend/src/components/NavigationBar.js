@@ -1,9 +1,11 @@
 import { Outlet, Link, useNavigate} from "react-router-dom";
-import { Navbar, Nav, Container, FormControl, Button} from 'react-bootstrap';
+import { Navbar, Nav, Container, FormControl, Button, NavDropdown, InputGroup} from 'react-bootstrap';
 import { useState} from "react";
 import { signOut, getAuth } from "firebase/auth";
+import {BsSearch} from "react-icons/bs"
 
-const NavigationBar = () => {
+const NavigationBar = (props) => {
+  let username = props.username
 
   let [searchValue, setSearchValue] = useState("")
   const navigate = useNavigate();
@@ -33,16 +35,24 @@ const NavigationBar = () => {
           <Navbar.Brand as={Link} to='/'>Bear Movies</Navbar.Brand>
           <Navbar.Toggle/>
           <Navbar.Collapse>
+            <Nav className="me-auto ms-5">
+              <InputGroup>
+              <FormControl
+                placeholder="Search"
+                value = {searchValue}
+                onChange={(e) => { setSearchValue(e.target.value) }}
+              />
+              <Button variant="outline-secondary" onClick={searchMovieRequest}>
+                <BsSearch/>
+              </Button>
+              </InputGroup>
+            </Nav>
             <Nav>
               <Nav.Link as={Link} to='/watchlist'>My Watchlist</Nav.Link>
               <Nav.Link as={Link} to='/top250'>Top 250 Movies</Nav.Link>
-              <Button onClick={logOut}>LOG OUT FRIEND</Button>
-            </Nav>
-            <Nav>
-              <FormControl placeholder="Search"
-                    value = {searchValue}
-                    onChange={(e) => { setSearchValue(e.target.value) }}/>
-              <Button onClick={searchMovieRequest}>Search</Button>
+              <NavDropdown title={username}>
+                  <NavDropdown.Item onClick={logOut}>Logout</NavDropdown.Item>
+              </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Container>

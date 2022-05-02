@@ -3490,29 +3490,28 @@ app.get("/watchlist/:uid", (req, res) => {
   });
 })
 
-app.get("/watchlist_check", (req, res) => {
+app.get("/watchlist", (req, res) => {
   let filter = {
     _id: req.query.uid,
     movies: {$elemMatch : {movie_id : req.query.movie_id}}
   }
   collection.find(filter).toArray(function(err, array) {
     if (err) throw err;
-    if(array){
+    if(array.length > 0){
       return res.status(200).send(true);
     }
     else{
       return res.status(200).send(false);
     }
-    
   });
 })
 
 //collection.insertOne()
-app.delete("/watchlist/remove", (req, res) => {
+app.delete("/watchlist", (req, res) => {
   let filter = {
-    _id: req.params.uid
+    _id: req.query.uid
   }
-  let new_vals = { $pull: { 'movies': {movie_id: req.query.movie_id, image: req.query.image}}}
+  let new_vals = { $pull: { 'movies': {movie_id: req.query.movie_id}}}
   collection.updateOne(filter, new_vals, (err, response) =>{
     if(err){
       console.log("movie was not removed")

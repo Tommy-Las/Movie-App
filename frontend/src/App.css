@@ -7,12 +7,24 @@
     margin: auto;
     margin-top: 15px;
 }
+.carousel_container{
+    display: flex;
+    /* max-width: 300px; */
+    justify-content: center;
+    max-height: 220px;
+    overflow: hidden;
+}
 .carousel{
+    max-width: 320px;
+    max-height: 320px;
     display: block;
-    margin-top: 30px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
+}
+
+.carousel_image{
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  /* max-height: 330px;   */
 }
 .navbar{
     background-color: #171937;
@@ -21,12 +33,22 @@
 body{
     color: rgb(255, 255, 255);
     background-color: #101318;
+    background-image: url('./components/rocky.png');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .home_box{
-    margin: 365px 50px 100px 50px;
+    padding: 15px 15px 15px 15px;
+    margin-top: 370px;
     text-align: center;
     background-color: #171937;
+    display: inline-block;  
+}
+
+.home{
+    display: flex;
+    justify-content: center;
 }
 
 .movies_row{
@@ -53,4 +75,10 @@ body{
 
 .button {
     text-align: center;
+}
+.minutes{
+    /* text-align: end; */
+    margin-top: 15px;
+    font-size: 25px;
+    color: white    ;
 }

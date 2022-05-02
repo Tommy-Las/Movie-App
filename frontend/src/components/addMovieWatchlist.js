@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 function addMovieWatchlist (user_id, movie_id, image) {
-    console.log('in add movie function. the movie id is: ' + user_id)
+    console.log('in add movie function. the movie id is: ' + movie_id + "poster is " + image)
     
     let obj = {
         _id: user_id,
