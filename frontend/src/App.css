@@ -5,9 +5,10 @@
 }
 
 .logo{
-    margin-top: -15px;
+    margin-top: -5px;
     margin-bottom: -15px;
-    height: 65px;
+    margin-right: 5px;
+    height: 60px;
 }
 
 .user_image{
@@ -42,6 +43,7 @@
 }
 .navbar{
     background-color: #171937;
+    color: white;
 }
 
 body{
@@ -110,4 +112,10 @@ body{
 
 .description{
     font-size: 14px;
+}
+
+.logo-title{
+    font-size: 25px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    padding-right: 28px;
 }

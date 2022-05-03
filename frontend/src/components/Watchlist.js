@@ -17,7 +17,7 @@ function Watchlist(props){
             return (<Link to={"/movie"} state={{movie_id: movie.movie_id}} key={movie.image}>
                 <Figure className="movie">
                 <Figure.Image
-                    className="border border-light"
+                    className="border border-light effect"
                     width={171}
                     height={180}
                     src={movie.image}

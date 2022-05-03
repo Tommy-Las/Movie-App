@@ -32,14 +32,17 @@ const NavigationBar = (props) => {
 
   return (
     <>
-      <Navbar collapseOnSelect expand='sm' variant='dark' className="navbar">
+      <Navbar collapseOnSelect variant="dark" className="navbar">
         <Container>
-          <Navbar.Brand as={Link} to='/'>
+          <Navbar.Brand as={Link} to='/' className="logo">
             <img
             src={image}
             className="align-top logo"
             alt="logo"/>
-            </Navbar.Brand>  
+          </Navbar.Brand>
+          <Navbar.Brand as={Link} to='/' className='logo-title'>
+            Bear Movies
+          </Navbar.Brand> 
           <Navbar.Toggle/>
           <Navbar.Collapse>
             <Nav className="me-auto ms-5">

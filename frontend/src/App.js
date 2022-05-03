@@ -7,7 +7,7 @@ import Top250 from './components/Top250';
 import SearchMovie from './components/SearchMovie';
 import SingleMovie from './components/SingleMovie';
 import Login from './components/Login';
-import {getAuth, onAuthStateChanged} from 'firebase/auth'
+import {getAuth, onAuthStateChanged, getIdToken} from 'firebase/auth'
 import {useEffect, useState } from 'react';
 
 
@@ -36,7 +36,6 @@ function App() {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       console.log('Log in successful')
-      console.log(user)
       setPhoto(user.photoURL)
       setUsername(user.displayName)
       setUid(user.uid)
@@ -55,7 +54,7 @@ function App() {
         <Route path="/" element={<NavigationBar username={username} user_photo={photo}/>} >
           <Route path="" element={<Home user_id={uid}/>} />
           <Route path="watchlist" element={<Watchlist user_id={uid} />} />
-          <Route path="top250" element={<Top250 />} />
+          <Route path="top250" element={<Top250 auth={auth}/>} />
           <Route path="movies" element={<SearchMovie />} />
           <Route path="movie" element={<SingleMovie user_id={uid}/>} />
           

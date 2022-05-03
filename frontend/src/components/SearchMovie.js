@@ -17,13 +17,11 @@ function SearchMovie(){
                     return <Link to={"/movie"} state={{id:movie.id}} className="movie">
                     <Figure>
                     <Figure.Image
+                        className="border border-light effect"
                         width={171}
                         height={180}
                         src={movie.image}
                     />
-                    {/* <Figure.Caption>
-                        {movie.title}
-                    </Figure.Caption> */}
                     </Figure>
                     </Link>
                 }

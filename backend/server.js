@@ -10,11 +10,21 @@ const { default: axios } = require('axios');
 
 let dbo = ''
 
-// const firebase_app = require('firebase-admin/app');
-// const firebase = require('firebase-admin');
-// firebase_app.initializeApp({
-//     firebase: firebase_app.applicationDefault(),
-// })
+const firebase_app = require('firebase-admin/app');
+const firebase = require('firebase-admin');
+firebase_app.initializeApp({
+  "apiKey": process.env.FIREBASE_API_KEY,
+
+  "authDomain": process.env.FIREBASE_AUTH_DOMAIN,
+
+  "projectId": process.env.FIREBASE_PROJECT_ID,
+
+  "storageBucket": process.env.FIREBASE_STORAGE_BUCKET,
+
+  "messagingSenderId": process.env.FIREBASE_SENDER_ID,
+
+  "appId": process.env.FIREBASE_APP_ID
+})
 
 
 
@@ -3347,7 +3357,7 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   
     // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization');
   
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
@@ -3363,28 +3373,28 @@ app.use(function (req, res, next) {
   });
 
   //Firebase Authentication 
+  function checkAuth(req, res, next) {
+    function throwAuthError(message, status = 403) {
+        res.status(status).send({ message: "Auth Error: " + message });
+    }
+    let token = req.headers.authorization;
+    if (!token) {
+        return throwAuthError("Missing authorization header", 401);
+    }
+    firebase.auth().verifyIdToken(token)
+        .then(decoded => {
+            // attach auth info to request:
+            console.log('authorized request')
+            req.user = decoded;
 
-//   function checkAuth(req, res, next) {
-//     function throwAuthError(message, status = 403) {
-//         res.status(status).send({ message: "Auth Error: " + message });
-//     }
-//     let token = req.headers.authorization;
-//     if (!token) {
-//         return throwAuthError("Missing authorization header", 401);
-//     }
-//     firebase.auth().verifyIdToken(token)
-//         .then(decoded => {
-//             // attach auth info to request:
-//             req.user = decoded;
-
-//             // continue on
-//             next();
-//         })
-//         .catch(err => {
-//             console.log(err.message);
-//             throwAuthError("Invalid ID token", 403);
-//         })
-// }
+            // continue on
+            next();
+        })
+        .catch(err => {
+            console.log(err.message);
+            throwAuthError("Invalid ID token", 403);
+        })
+}
 
   //connect to database globally
   MongoClient.connect(`mongodb://${process.env.MONGODB_HOSTNAME}:${process.env.MONGODB_PORT}/`, (err, client) => {
@@ -3399,7 +3409,7 @@ app.use(function (req, res, next) {
 })
 
 //CORS FUNCTIONS
-app.get("/top250", (req, res) => {
+app.get("/top250", checkAuth, (req, res) => {
     res.status(200).send(top250_data)
     //API call for top 250 movies
     // axios.get("https://imdb-api.com/en/API/Top250Movies/+ process.env.IMBD_KEY, {}).then((response) => {
