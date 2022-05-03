@@ -3,9 +3,11 @@ import { Navbar, Nav, Container, FormControl, Button, NavDropdown, InputGroup} f
 import { useState} from "react";
 import { signOut, getAuth } from "firebase/auth";
 import {BsSearch} from "react-icons/bs"
+import image from "./logo.png"
 
 const NavigationBar = (props) => {
   let username = props.username
+  let user_photo = props.user_photo
 
   let [searchValue, setSearchValue] = useState("")
   const navigate = useNavigate();
@@ -32,7 +34,12 @@ const NavigationBar = (props) => {
     <>
       <Navbar collapseOnSelect expand='sm' variant='dark' className="navbar">
         <Container>
-          <Navbar.Brand as={Link} to='/'>Bear Movies</Navbar.Brand>
+          <Navbar.Brand as={Link} to='/'>
+            <img
+            src={image}
+            className="align-top logo"
+            alt="logo"/>
+            </Navbar.Brand>  
           <Navbar.Toggle/>
           <Navbar.Collapse>
             <Nav className="me-auto ms-5">
@@ -47,12 +54,14 @@ const NavigationBar = (props) => {
               </Button>
               </InputGroup>
             </Nav>
-            <Nav>
-              <Nav.Link as={Link} to='/watchlist'>My Watchlist</Nav.Link>
+            <Nav className="me-3">
               <Nav.Link as={Link} to='/top250'>Top 250 Movies</Nav.Link>
-              <NavDropdown title={username}>
+              <Nav.Link as={Link} to='/watchlist'>My Watchlist</Nav.Link>
+            </Nav>
+            <Nav className="me-5">
+            <NavDropdown title={<img className='user_image' src={user_photo} alt='user photo'/>}>
                   <NavDropdown.Item onClick={logOut}>Logout</NavDropdown.Item>
-              </NavDropdown>
+            </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Container>

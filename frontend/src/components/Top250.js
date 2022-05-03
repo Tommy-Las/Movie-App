@@ -13,7 +13,7 @@ function Top250(){
                 <Link to={"/movie"} state={{movie_id:movie.id}} key={movie.id}>
                 <Figure className="movie">
                 <Figure.Image
-                    className="border border-light"
+                    className="border border-light effect"
                     width={171}
                     height={180}
                     src={movie.image}

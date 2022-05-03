@@ -57,7 +57,7 @@ function SingleMovie(props){
     }
     const removeMovie = () => {
         removeMovieWatchlist(user_id, movie_id)
-        setWatchlistButton(<Button onClick={() => {addMovie()}}>
+        setWatchlistButton(<Button variant="success" onClick={() => {addMovie()}}>
                     ADD TO MY WATCHLIST
                     </Button>)
     };
@@ -65,7 +65,7 @@ function SingleMovie(props){
     const addMovie = () => {
         console.log(main_image)
         addMovieWatchlist(user_id, movie_id, main_image)
-        setWatchlistButton(<Button onClick={() => {removeMovie()}}>REMOVE FROM MY WATCHLIST</Button>)
+        setWatchlistButton(<Button variant="danger" onClick={() => {removeMovie()}}>REMOVE FROM MY WATCHLIST</Button>)
     }
 
     useEffect( () => {
@@ -76,11 +76,11 @@ function SingleMovie(props){
         movieInWatchlist(user_id, movie_id).then((res) => {
             console.log(res)
             if(res){
-                setWatchlistButton(<Button onClick={() => {removeMovie()}}>
+                setWatchlistButton(<Button variant="danger" onClick={() => {removeMovie()}}>
                     REMOVE FROM MY WATCHLIST
                     </Button>)
             } else{
-                setWatchlistButton(<Button onClick={() => {addMovie()}}>
+                setWatchlistButton(<Button variant="success" onClick={() => {addMovie()}}>
                     ADD TO MY WATCHLIST
                     </Button>)
             }
@@ -95,8 +95,8 @@ function SingleMovie(props){
                         <Row>
                         <Figure>
                             <Figure.Image
-                                width={340}
-                                height={340}
+                                width={380}
+                                height={380}
                                 src={poster}
                             />
                             <Figure.Caption className="minutes">
@@ -119,9 +119,9 @@ function SingleMovie(props){
                             </Col>
                         </Row>
                         
-                        <p>{description}</p>
+                        <p className='description'>{description}</p>
                         <div className='carousel_container'>
-                            <Carousel fade className = "carousel border">
+                            <Carousel  className = "carousel">
                                 {images}
                             </Carousel>
                         </div>

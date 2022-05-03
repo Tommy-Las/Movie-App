@@ -17,6 +17,7 @@ function App() {
   let [user, setUser] = useState(auth.currentUser)
   let [uid, setUid] = useState('')
   let [username, setUsername] = useState('')
+  let [photo, setPhoto] = useState('')
 
   // useEffect(()=>{
   //   onAuthStateChanged(auth, (user) => {
@@ -35,6 +36,8 @@ function App() {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       console.log('Log in successful')
+      console.log(user)
+      setPhoto(user.photoURL)
       setUsername(user.displayName)
       setUid(user.uid)
       setUser(user)
@@ -49,7 +52,7 @@ function App() {
     <div className="App">
       {user ? (<BrowserRouter>
       <Routes>
-        <Route path="/" element={<NavigationBar username={username}/>} >
+        <Route path="/" element={<NavigationBar username={username} user_photo={photo}/>} >
           <Route path="" element={<Home user_id={uid}/>} />
           <Route path="watchlist" element={<Watchlist user_id={uid} />} />
           <Route path="top250" element={<Top250 />} />
