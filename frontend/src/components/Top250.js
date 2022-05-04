@@ -10,10 +10,7 @@ function Top250(props){
     let [movies, setMovies] = useState('')
     
     let auth = getAuth()
-    console.log(auth)
-    //let auth = props.auth;
-    //console.log(props.auth)
-    
+
     const sendRequest = () => {
         getIdToken(auth.currentUser).then((token)=>{
             axios.get("http://localhost:5888/top250", {headers: {Authorization: token}}).then((response) => {

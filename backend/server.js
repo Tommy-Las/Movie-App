@@ -3421,7 +3421,7 @@ app.get("/top250", checkAuth, (req, res) => {
     // })
 })
 
-app.get("/search/:movie_name" , (req, res) => {
+app.get("/search/:movie_name", checkAuth, (req, res) => {
     var movie_name = req.params.movie_name;
     console.log(movie_name)
     res.status(200).send(search_data)
@@ -3434,7 +3434,7 @@ app.get("/search/:movie_name" , (req, res) => {
     // })
 })
 
-app.get("/movie/:movie_id" , (req, res) => {
+app.get("/movie/:movie_id", checkAuth, (req, res) => {
     var movie_id = req.params.movie_id;
     res.status(200).send(title_data)
     // axios.get("https://imdb-api.com/en/API/Title/" + process.env.IMBD_KEY + "/" + movie_id, {}).then((response) => {
@@ -3446,7 +3446,7 @@ app.get("/movie/:movie_id" , (req, res) => {
     // })
 })
 
-app.get("/images/:movie_id" , (req, res) => {
+app.get("/images/:movie_id", checkAuth, (req, res) => {
     var movie_id = req.params.movie_id;
     res.status(200).send(image_data)
     // axios.get("https://imdb-api.com/en/API/Images/" + process.env.IMBD_KEY + "/" + movie_id + "/Short", {}).then((response) => {

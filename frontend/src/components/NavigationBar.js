@@ -26,7 +26,6 @@ const NavigationBar = (props) => {
 }
   const searchMovieRequest = (e) => {
     e.preventDefault()
-    console.log('searched movie: ' + searchValue)
     navigate('/movies', {state:{movie: searchValue}})
   } 
 

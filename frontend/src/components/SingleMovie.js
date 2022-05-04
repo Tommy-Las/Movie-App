@@ -6,6 +6,7 @@ import addMovieWatchlist from './addMovieWatchlist'
 import removeMovieWatchlist from './removeMovieWatchlist'
 import movieInWatchlist from './movieInWatchlist'
 import { BsStarFill } from "react-icons/bs";
+import {getAuth, getIdToken} from 'firebase/auth'
 
 function SingleMovie(props){
 
@@ -13,6 +14,8 @@ function SingleMovie(props){
     let movie_id = useLocation().state.movie_id
     let [watchlistButton, setWatchlistButton] = useState('')
 
+    let auth = getAuth()
+    
     //all variables
     let [fullTitle, setFullTitle] = useState('')
     let [director, setDirector] = useState('')
@@ -26,34 +29,40 @@ function SingleMovie(props){
     let [images, setImages] = useState('')
 
     const sendRequest = () => {
-        axios.get("http://localhost:5888/movie/" + movie_id, {}).then((response)=>{
-            setFullTitle(response.data.fullTitle);
-            setDirector(response.data.directors);
-            setStars(response.data.stars);
-            setRating(response.data.imDbRating);
-            setGenre(response.data.genres);
-            main_image=response.data.image
-            setPoster(response.data.image);
-            setMinutes(response.data.runtimeMins);
-            setDescription(response.data.plot);
-        }).catch((err)=>{
-            console.dir(err)
+
+        getIdToken(auth.currentUser).then((token)=>{
+            axios.get("http://localhost:5888/movie/" + movie_id, {headers: {Authorization: token}}).then((response)=>{
+                setFullTitle(response.data.fullTitle);
+                setDirector(response.data.directors);
+                setStars(response.data.stars);
+                setRating(response.data.imDbRating);
+                setGenre(response.data.genres);
+                main_image=response.data.image
+                setPoster(response.data.image);
+                setMinutes(response.data.runtimeMins);
+                setDescription(response.data.plot);
+            }).catch((err)=>{
+                console.dir(err)
+            })
+
+            axios.get("http://localhost:5888/images/" + movie_id, {headers: {Authorization: token}}).then((response)=>{
+                var images_array = response.data.items.map((image_element) => {
+                    return(<Carousel.Item key={image_element.image}>
+                        <img
+                        className="carousel_image"
+                        src={image_element.image}
+                        alt={image_element.title}
+                        />
+                    </Carousel.Item>)
+                })
+                setImages(images_array)
+            }).catch((err)=>{
+                console.log(err)
+            })
         })
         
-        axios.get("http://localhost:5888/images/" + movie_id, {}).then((response)=>{
-            var images_array = response.data.items.map((image_element) => {
-                return(<Carousel.Item key={image_element.image}>
-                    <img
-                    className="carousel_image"
-                    src={image_element.image}
-                    alt={image_element.title}
-                    />
-                </Carousel.Item>)
-            })
-            setImages(images_array)
-        }).catch((err)=>{
-            console.log(err)
-        })
+        
+        
     }
     const removeMovie = () => {
         removeMovieWatchlist(user_id, movie_id)
@@ -63,7 +72,6 @@ function SingleMovie(props){
     };
 
     const addMovie = () => {
-        console.log(main_image)
         addMovieWatchlist(user_id, movie_id, main_image)
         setWatchlistButton(<Button variant="danger" onClick={() => {removeMovie()}}>REMOVE FROM MY WATCHLIST</Button>)
     }
