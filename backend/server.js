@@ -8,10 +8,14 @@ const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 const { default: axios } = require('axios');
 
+//database global variable
 let dbo = ''
+// will store the MongoDB database collection after it is loaded (see bottom of file)
+let collection = null;
 
 const firebase_app = require('firebase-admin/app');
 const firebase = require('firebase-admin');
+//start the firebase app with the google credentials 
 firebase_app.initializeApp({
   "apiKey": process.env.FIREBASE_API_KEY,
 
@@ -2783,570 +2787,8 @@ let top250_data = {
     ],
     "errorMessage": ""
   }
-
-let search_data = {
-    "searchType": "Movie",
-    "expression": "inception 2010",
-    "results": [
-      {
-        "id": "tt1375666",
-        "resultType": "Title",
-        "image": "https://imdb-api.com/images/original/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_Ratio0.6800_AL_.jpg",
-        "title": "Inception",
-        "description": "(2010)"
-      },
-      {
-        "id": "tt1790736",
-        "resultType": "Title",
-        "image": "https://imdb-api.com/images/original/MV5BMjE0NGIwM2EtZjQxZi00ZTE5LWExN2MtNDBlMjY1ZmZkYjU3XkEyXkFqcGdeQXVyNjMwNzk3Mjk@._V1_Ratio0.6800_AL_.jpg",
-        "title": "Inception: Motion Comics",
-        "description": "(2010 Video)"
-      },
-      {
-        "id": "tt5295990",
-        "resultType": "Title",
-        "image": "https://imdb-api.com/images/original/MV5BZGFjOTRiYjgtYjEzMS00ZjQ2LTkzY2YtOGQ0NDI2NTVjOGFmXkEyXkFqcGdeQXVyNDQ5MDYzMTk@._V1_Ratio0.6800_AL_.jpg",
-        "title": "Inception: Jump Right Into the Action",
-        "description": "(2010 Video)"
-      },
-      {
-        "id": "tt1686778",
-        "resultType": "Title",
-        "image": "https://imdb-api.com/images/original/nopicture.jpg",
-        "title": "Inception: 4Movie Premiere Special",
-        "description": "(2010 TV Movie)"
-      },
-      {
-        "id": "tt12960252",
-        "resultType": "Title",
-        "image": "https://imdb-api.com/images/original/nopicture.jpg",
-        "title": "Inception Premiere",
-        "description": "(2010)"
-      }
-    ],
-    "errorMessage": ""
-  }
-
-let title_data = {
-    "id": "tt0110413",
-    "title": "Léon: The Professional",
-    "originalTitle": "Léon",
-    "fullTitle": "Léon: The Professional (1994)",
-    "type": "Movie",
-    "year": "1994",
-    "image": "https://imdb-api.com/images/original/MV5BODllNWE0MmEtYjUwZi00ZjY3LThmNmQtZjZlMjI2YTZjYmQ0XkEyXkFqcGdeQXVyNTc1NTQxODI@._V1_Ratio0.6751_AL_.jpg",
-    "releaseDate": "1994-11-18",
-    "runtimeMins": "110",
-    "runtimeStr": "1h 50min",
-    "plot": "After her father, step-mother, step-sister and little brother are killed by her father's employers, the 12-year-old daughter of an abject drug dealer manages to take refuge in the apartment of a professional hitman who at her request teaches her the methods of his job so she can take her revenge on the corrupt DEA agent who ruined her life by killing her beloved brother.",
-    "plotLocal": "",
-    "plotLocalIsRtl": false,
-    "awards": "Top rated movie #34 | Awards, 6 wins & 15 nominations",
-    "directors": "Luc Besson",
-    "directorList": [
-      {
-        "id": "nm0000108",
-        "name": "Luc Besson"
-      }
-    ],
-    "writers": "Luc Besson",
-    "writerList": [
-      {
-        "id": "nm0000108",
-        "name": "Luc Besson"
-      }
-    ],
-    "stars": "Jean Reno, Gary Oldman, Natalie Portman",
-    "starList": [
-      {
-        "id": "nm0000606",
-        "name": "Jean Reno"
-      },
-      {
-        "id": "nm0000198",
-        "name": "Gary Oldman"
-      },
-      {
-        "id": "nm0000204",
-        "name": "Natalie Portman"
-      }
-    ],
-    "actorList": [
-      {
-        "id": "nm0000606",
-        "image": "https://imdb-api.com/images/original/MV5BMTgzNjA1MjY2M15BMl5BanBnXkFtZTYwMjgzOTk0._V1_Ratio1.0000_AL_.jpg",
-        "name": "Jean Reno",
-        "asCharacter": "Leonas Leon"
-      },
-      {
-        "id": "nm0000198",
-        "image": "https://imdb-api.com/images/original/MV5BMTc3NTM4MzQ5MV5BMl5BanBnXkFtZTcwOTE4MDczNw@@._V1_Ratio1.0000_AL_.jpg",
-        "name": "Gary Oldman",
-        "asCharacter": "Stansfieldas Stansfield"
-      },
-      {
-        "id": "nm0000204",
-        "image": "https://imdb-api.com/images/original/MV5BYzU0ZGRhZWItMGJlNy00YzlkLWIzOWYtNDA2NzlhMDg3YjMwXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_Ratio1.0000_AL_.jpg",
-        "name": "Natalie Portman",
-        "asCharacter": "Mathildaas Mathilda"
-      },
-      {
-        "id": "nm0000732",
-        "image": "https://imdb-api.com/images/original/MV5BNTMxMjYzNzk5Nl5BMl5BanBnXkFtZTcwNzU4NDgwMw@@._V1_Ratio1.0000_AL_.jpg",
-        "name": "Danny Aiello",
-        "asCharacter": "Tonyas Tony"
-      },
-      {
-        "id": "nm0032216",
-        "image": "https://imdb-api.com/images/original/MV5BMDVlNjcxM2ItNTU2NC00YzJkLWFlMzEtZGYwMTI0MmI5ZGE4XkEyXkFqcGdeQXVyNjkyNzAzNg@@._V1_Ratio1.0000_AL_.jpg",
-        "name": "Peter Appel",
-        "asCharacter": "Malkyas Malky"
-      },
-      {
-        "id": "nm0089112",
-        "image": "https://imdb-api.com/images/original/MV5BNGU5YTdkODMtYjAxYS00NmM4LWI0MGEtZjZmNGMwYTA2Njg0XkEyXkFqcGdeQXVyNjUxMjc1OTM@._V1_Ratio2.3571_AL_.jpg",
-        "name": "Willi One Blood",
-        "asCharacter": "1st Stansfield Manas 1st Stansfield Man"
-      },
-      {
-        "id": "nm0187199",
-        "image": "https://imdb-api.com/images/original/MV5BMTQ4MDMyODEyMF5BMl5BanBnXkFtZTgwNDI4OTQ1MjE@._V1_Ratio1.3429_AL_.jpg",
-        "name": "Don Creech",
-        "asCharacter": "2nd Stansfield Manas 2nd Stansfield Man"
-      },
-      {
-        "id": "nm0321798",
-        "image": "https://imdb-api.com/images/original/nopicture.jpg",
-        "name": "Keith A. Glascoe",
-        "asCharacter": "3rd Stansfield Manas 3rd Stansfield Man"
-      },
-      {
-        "id": "nm0779685",
-        "image": "https://imdb-api.com/images/original/nopicture.jpg",
-        "name": "Randolph Scott",
-        "asCharacter": "4th Stansfield Manas 4th Stansfield Man"
-      },
-      {
-        "id": "nm0045937",
-        "image": "https://imdb-api.com/images/original/MV5BMzExOTM3ZmMtODMyNS00ZjNlLTljZDctNGY2NzBjYzAwMGEwXkEyXkFqcGdeQXVyMTQ5Njc3Nzcw._V1_Ratio1.0000_AL_.jpg",
-        "name": "Michael Badalucco",
-        "asCharacter": "Mathilda's Fatheras Mathilda's Father"
-      },
-      {
-        "id": "nm0338746",
-        "image": "https://imdb-api.com/images/original/MV5BODczMTdmYTQtNjlmYS00MzgxLTk2ZWEtYmQ1ZWIzM2U0M2E1XkEyXkFqcGdeQXVyMTEwODg2MDY@._V1_Ratio1.3286_AL_.jpg",
-        "name": "Ellen Greene",
-        "asCharacter": "Mathilda's Motheras Mathilda's Mother"
-      },
-      {
-        "id": "nm0716408",
-        "image": "https://imdb-api.com/images/original/MV5BMTU3NzA1ODQ2OV5BMl5BanBnXkFtZTcwNDU5OTAzMQ@@._V1_Ratio1.0000_AL_.jpg",
-        "name": "Elizabeth Regen",
-        "asCharacter": "Mathilda's Sisteras Mathilda's Sister"
-      },
-      {
-        "id": "nm0560593",
-        "image": "https://imdb-api.com/images/original/nopicture.jpg",
-        "name": "Carl J. Matusovich",
-        "asCharacter": "Mathilda's Brotheras Mathilda's Brother"
-      },
-      {
-        "id": "nm0784262",
-        "image": "https://imdb-api.com/images/original/MV5BMTM1Njk4NTEyOV5BMl5BanBnXkFtZTYwNDI2Mzgy._V1_Ratio1.3571_AL_.jpg",
-        "name": "Frank Senger",
-        "asCharacter": "Fatmanas Fatman"
-      },
-      {
-        "id": "nm1707797",
-        "image": "https://imdb-api.com/images/original/MV5BZTk5MWQwYjctYmZmMy00MGE4LWIwN2ItMTA2ZjM2YjBkOGViXkEyXkFqcGdeQXVyNjUxMjc1OTM@._V1_Ratio1.6429_AL_.jpg",
-        "name": "Lucius Wyatt Cherokee",
-        "asCharacter": "Tontoas Tonto"
-      },
-      {
-        "id": "nm0149987",
-        "image": "https://imdb-api.com/images/original/nopicture.jpg",
-        "name": "Eric Challier",
-        "asCharacter": "Bodyguard Chiefas Bodyguard Chief"
-      },
-      {
-        "id": "nm0076306",
-        "image": "https://imdb-api.com/images/original/nopicture.jpg",
-        "name": "Luc Bernard",
-        "asCharacter": "Mickeyas Mickey"
-      },
-      {
-        "id": "nm0494069",
-        "image": "https://imdb-api.com/images/original/MV5BNDE0Mjk0MjIyN15BMl5BanBnXkFtZTcwMTg5NzUyNQ@@._V1_Ratio1.0000_AL_.jpg",
-        "name": "Maïwenn",
-        "asCharacter": "Blond Babeas Blond Babe"
-      }
-    ],
-    "fullCast": null,
-    "genres": "Action, Crime, Drama",
-    "genreList": [
-      {
-        "key": "Action",
-        "value": "Action"
-      },
-      {
-        "key": "Crime",
-        "value": "Crime"
-      },
-      {
-        "key": "Drama",
-        "value": "Drama"
-      }
-    ],
-    "companies": "Gaumont, Les Films du Dauphin, Columbia Pictures",
-    "companyList": [
-      {
-        "id": "co0172053",
-        "name": "Gaumont"
-      },
-      {
-        "id": "co0008826",
-        "name": "Les Films du Dauphin"
-      },
-      {
-        "id": "co0050868",
-        "name": "Columbia Pictures"
-      }
-    ],
-    "countries": "France, USA",
-    "countryList": [
-      {
-        "key": "France",
-        "value": "France"
-      },
-      {
-        "key": "USA",
-        "value": "USA"
-      }
-    ],
-    "languages": "English, Italian, French",
-    "languageList": [
-      {
-        "key": "English",
-        "value": "English"
-      },
-      {
-        "key": "Italian",
-        "value": "Italian"
-      },
-      {
-        "key": "French",
-        "value": "French"
-      }
-    ],
-    "contentRating": "R",
-    "imDbRating": "8.5",
-    "imDbRatingVotes": "1123457",
-    "metacriticRating": "64",
-    "ratings": null,
-    "wikipedia": null,
-    "posters": null,
-    "images": null,
-    "trailer": null,
-    "boxOffice": {
-      "budget": "FRF 115,000,000 (estimated)",
-      "openingWeekendUSA": "$5,306,558",
-      "grossUSA": "$19,501,238",
-      "cumulativeWorldwideGross": "$19,552,639"
-    },
-    "tagline": "If you want the job done right, hire a professional.",
-    "keywords": "hitman,girl,teenage girl,loss of family,neo noir",
-    "keywordList": [
-      "hitman",
-      "girl",
-      "teenage girl",
-      "loss of family",
-      "neo noir"
-    ],
-    "similars": [
-      {
-        "id": "tt0102926",
-        "title": "The Silence of the Lambs",
-        "image": "https://imdb-api.com/images/original/MV5BNjNhZTk0ZmEtNjJhMi00YzFlLWE1MmEtYzM1M2ZmMGMwMTU4XkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_Ratio0.6763_AL_.jpg",
-        "imDbRating": "8.6"
-      },
-      {
-        "id": "tt0114814",
-        "title": "The Usual Suspects",
-        "image": "https://imdb-api.com/images/original/MV5BYTViNjMyNmUtNDFkNC00ZDRlLThmMDUtZDU2YWE4NGI2ZjVmXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_Ratio0.6763_AL_.jpg",
-        "imDbRating": "8.5"
-      },
-      {
-        "id": "tt0253474",
-        "title": "The Pianist",
-        "image": "https://imdb-api.com/images/original/MV5BOWRiZDIxZjktMTA1NC00MDQ2LWEzMjUtMTliZmY3NjQ3ODJiXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_Ratio0.7246_AL_.jpg",
-        "imDbRating": "8.5"
-      },
-      {
-        "id": "tt0120689",
-        "title": "The Green Mile",
-        "image": "https://imdb-api.com/images/original/MV5BMTUxMzQyNjA5MF5BMl5BanBnXkFtZTYwOTU2NTY3._V1_Ratio0.6763_AL_.jpg",
-        "imDbRating": "8.6"
-      },
-      {
-        "id": "tt0120586",
-        "title": "American History X",
-        "image": "https://imdb-api.com/images/original/MV5BZTJhN2FkYWEtMGI0My00YWM4LWI2MjAtM2UwNjY4MTI2ZTQyXkEyXkFqcGdeQXVyNjc3MjQzNTI@._V1_Ratio0.6763_AL_.jpg",
-        "imDbRating": "8.5"
-      },
-      {
-        "id": "tt0114369",
-        "title": "Se7en",
-        "image": "https://imdb-api.com/images/original/MV5BOTUwODM5MTctZjczMi00OTk4LTg3NWUtNmVhMTAzNTNjYjcyXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_Ratio0.6763_AL_.jpg",
-        "imDbRating": "8.6"
-      },
-      {
-        "id": "tt0110912",
-        "title": "Pulp Fiction",
-        "image": "https://imdb-api.com/images/original/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_Ratio0.6860_AL_.jpg",
-        "imDbRating": "8.9"
-      },
-      {
-        "id": "tt0109830",
-        "title": "Forrest Gump",
-        "image": "https://imdb-api.com/images/original/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_Ratio0.6957_AL_.jpg",
-        "imDbRating": "8.8"
-      },
-      {
-        "id": "tt0482571",
-        "title": "The Prestige",
-        "image": "https://imdb-api.com/images/original/MV5BMjA4NDI0MTIxNF5BMl5BanBnXkFtZTYwNTM0MzY2._V1_Ratio0.6763_AL_.jpg",
-        "imDbRating": "8.5"
-      },
-      {
-        "id": "tt0137523",
-        "title": "Fight Club",
-        "image": "https://imdb-api.com/images/original/MV5BNDIzNDU0YzEtYzE5Ni00ZjlkLTk5ZjgtNjM3NWE4YzA3Nzk3XkEyXkFqcGdeQXVyMjUzOTY1NTc@._V1_Ratio0.6763_AL_.jpg",
-        "imDbRating": "8.8"
-      },
-      {
-        "id": "tt0172495",
-        "title": "Gladiator",
-        "image": "https://imdb-api.com/images/original/MV5BMDliMmNhNDEtODUyOS00MjNlLTgxODEtN2U3NzIxMGVkZTA1L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_Ratio0.6763_AL_.jpg",
-        "imDbRating": "8.5"
-      },
-      {
-        "id": "tt0209144",
-        "title": "Memento",
-        "image": "https://imdb-api.com/images/original/MV5BZTcyNjk1MjgtOWI3Mi00YzQwLWI5MTktMzY4ZmI2NDAyNzYzXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_Ratio0.6860_AL_.jpg",
-        "imDbRating": "8.5"
-      }
-    ],
-    "tvSeriesInfo": null,
-    "tvEpisodeInfo": null,
-    "errorMessage": null
-  }
-
-
-let image_data = {
-    "imDbId": "tt1375666",
-    "title": "Inception",
-    "fullTitle": "Inception (2010)",
-    "type": "Movie",
-    "year": "2010",
-    "items": [
-      {
-        "title": "Leonardo DiCaprio and Ken Watanabe in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMjIyNjk1OTgzNV5BMl5BanBnXkFtZTcwOTU0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio, Tom Berenger, Joseph Gordon-Levitt, Tom Hardy, Cillian Murphy, Elliot Page, and Ken Watanabe in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BNjMxNjI1Mjc1OV5BMl5BanBnXkFtZTcwMDY0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio, Christopher Nolan, and Elliot Page in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTk1NDM4MDMwMF5BMl5BanBnXkFtZTcwMjY0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio, Joseph Gordon-Levitt, Tom Hardy, Elliot Page, Ken Watanabe, and Dileep Rao in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTY3MzMzMDgyMF5BMl5BanBnXkFtZTcwMzY0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Lukas Haas and Ken Watanabe in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTMxNDExNzM4MV5BMl5BanBnXkFtZTcwNDY0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMjExMjkwNTQ0Nl5BMl5BanBnXkFtZTcwNTY0OTk1Mw@@._V1_Ratio1.0000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio and Joseph Gordon-Levitt in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTM0MjUzNjkwMl5BMl5BanBnXkFtZTcwNjY0OTk1Mw@@._V1_Ratio1.0000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio, Tom Hardy, and Cillian Murphy in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTgxNjg2OTc2M15BMl5BanBnXkFtZTcwNzY0OTk1Mw@@._V1_Ratio2.4200_AL_.jpg"
-      },
-      {
-        "title": "Joseph Gordon-Levitt and Tom Hardy in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTAyNjQ2NTIyMzBeQTJeQWpwZ15BbWU3MDY3NDk5NTM@._V1_Ratio2.3800_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio, Joseph Gordon-Levitt, and Tom Hardy in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTAzNTQwMDQ4ODReQTJeQWpwZ15BbWU3MDczNDk5NTM@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio and Christopher Nolan in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTM5MjMyMTgxNl5BMl5BanBnXkFtZTcwOTM0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio, Joseph Gordon-Levitt, and Ken Watanabe in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTgzODU4NTY1N15BMl5BanBnXkFtZTcwMTQ0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Marion Cotillard and Ken Watanabe in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BNDExNDYxODc1MF5BMl5BanBnXkFtZTcwNDQ0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTQ3NTU4MjA2Ml5BMl5BanBnXkFtZTcwNjQ0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio and Elliot Page in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTI3ODA1ODkwN15BMl5BanBnXkFtZTcwODQ0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio and Marion Cotillard in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTU3NTIyOTQyOV5BMl5BanBnXkFtZTcwMTU0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BNTQ5NzI5ODUyOV5BMl5BanBnXkFtZTcwMzU0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Christopher Nolan in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTMxODk0MTAzNl5BMl5BanBnXkFtZTcwNDU0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio and Elliot Page in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTU2MTc4NDk0MV5BMl5BanBnXkFtZTcwNjU0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio and Tom Hardy in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTA3NDIwNTc0MDZeQTJeQWpwZ15BbWU3MDYzNDk5NTM@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio, Tom Hardy, and Ken Watanabe in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMjIwNDE4ODc1NV5BMl5BanBnXkFtZTcwODM0OTk1Mw@@._V1_Ratio1.6200_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BNDMwMTM2NjEyNF5BMl5BanBnXkFtZTcwMDQ0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio and Elliot Page in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTMxODMxMTMzNl5BMl5BanBnXkFtZTcwMzQ0OTk1Mw@@._V1_Ratio1.5200_AL_.jpg"
-      },
-      {
-        "title": "Tom Hardy in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTA2MDA2NjIxMzJeQTJeQWpwZ15BbWU3MDU0NDk5NTM@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Joseph Gordon-Levitt in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTY0NDEwMzMwMl5BMl5BanBnXkFtZTcwNzQ0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTk1NjIzMjMwNF5BMl5BanBnXkFtZTcwOTQ0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio, Michael Caine, Wally Pfister, Christopher Nolan, and Elliot Page in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTU1MzY2NTIzNV5BMl5BanBnXkFtZTcwMDM0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Michael Caine in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BNjk2MTMzNTA4MF5BMl5BanBnXkFtZTcwMTM0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio and Christopher Nolan in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTk0MzQ3MjEwMF5BMl5BanBnXkFtZTcwMjM0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio, Cillian Murphy, and Christopher Nolan in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTUxNjYzMTIyM15BMl5BanBnXkFtZTcwMzM0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio and Cillian Murphy in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTQxNTM4MDA1MF5BMl5BanBnXkFtZTcwNDM0OTk1Mw@@._V1_Ratio1.5600_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio and Marion Cotillard in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BOTQzNTEyMzE3N15BMl5BanBnXkFtZTcwNTM0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio and Joseph Gordon-Levitt in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTI3ODgyMDc2Nl5BMl5BanBnXkFtZTcwODY0OTk1Mw@@._V1_Ratio2.4200_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTU0MzQxMDY0MV5BMl5BanBnXkFtZTcwOTY0OTk1Mw@@._V1_Ratio2.4200_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTMwMDY5Mjc0OV5BMl5BanBnXkFtZTcwMDc0OTk1Mw@@._V1_Ratio2.4200_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio and Michael Caine in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BOTc0NTkwMTYyNV5BMl5BanBnXkFtZTcwMTc0OTk1Mw@@._V1_Ratio2.3800_AL_.jpg"
-      },
-      {
-        "title": "Elliot Page in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTM1MzA2ODIxOV5BMl5BanBnXkFtZTcwMjc0OTk1Mw@@._V1_Ratio2.3800_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio and Elliot Page in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTY1Nzk4ODUwMF5BMl5BanBnXkFtZTcwMzc0OTk1Mw@@._V1_Ratio2.3800_AL_.jpg"
-      },
-      {
-        "title": "Marion Cotillard in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTMzMDEyMzg0NF5BMl5BanBnXkFtZTcwNDc0OTk1Mw@@._V1_Ratio2.3800_AL_.jpg"
-      },
-      {
-        "title": "Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTU4MDk3MjUzNF5BMl5BanBnXkFtZTcwNTc0OTk1Mw@@._V1_Ratio2.3800_AL_.jpg"
-      },
-      {
-        "title": "Marvin Campbell and Joseph Gordon-Levitt in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTUxMjI3Njk4OF5BMl5BanBnXkFtZTcwNzI2NjQ0Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio and Joseph Gordon-Levitt in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMTk1MzExMjM5Nl5BMl5BanBnXkFtZTcwNjI2NjQ0Mw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMjAxOTM4MzQ5Ml5BMl5BanBnXkFtZTcwODMwNzQxMw@@._V1_Ratio1.5000_AL_.jpg"
-      },
-      {
-        "title": "Leonardo DiCaprio in Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMjEzNzg0Mjk0Ml5BMl5BanBnXkFtZTcwMjI1ODkwMw@@._V1_Ratio2.4000_AL_.jpg"
-      },
-      {
-        "title": "Tom Hardy at an event for Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMjM4MjE3MjY4M15BMl5BanBnXkFtZTgwMTIzODc5MDI@._V1_Ratio1.0000_AL_.jpg"
-      },
-      {
-        "title": "Tom Hardy at an event for Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMjMwNTkwNTkyNF5BMl5BanBnXkFtZTgwMjIzODc5MDI@._V1_Ratio1.0000_AL_.jpg"
-      },
-      {
-        "title": "Tom Hardy at an event for Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BNjQyMzk4OTAyNl5BMl5BanBnXkFtZTgwMTMzODc5MDI@._V1_Ratio1.0000_AL_.jpg"
-      },
-      {
-        "title": "Tom Hardy at an event for Inception (2010)",
-        "image": "https://imdb-api.com/images/original/MV5BMjQwMDcwNDA5N15BMl5BanBnXkFtZTgwOTMzODc5MDI@._V1_Ratio1.0000_AL_.jpg"
-      }
-    ],
-    "errorMessage": ""
-  }
   
-// will store the MongoDB database collection after it is loaded (see bottom of file)
-let collection = null;
+
 
 app.use(function (req, res, next) {
 
@@ -3378,6 +2820,7 @@ app.use(function (req, res, next) {
         res.status(status).send({ message: "Auth Error: " + message });
     }
     let token = req.headers.authorization;
+    //empty token
     if (!token) {
         return throwAuthError("Missing authorization header", 401);
     }
@@ -3403,17 +2846,23 @@ app.use(function (req, res, next) {
         throw err; // exits program - mongo error
     } else {
         console.log('connected to database')
+        //database name
         dbo = client.db(process.env.MONGODB_DATABASE);
+        //database collection
         collection = dbo.collection(process.env.MONGODB_COLLECTION);
     }
 })
 
-//CORS FUNCTIONS
-app.get("/top250", checkAuth, (req, res) => {
+//API CALLS TO IMBD
+
+/** * 
+ * GET request endpoint to /top250 that will make an API call to IMBd to request the top250 movies
+ * returns an array of movie objects
+ */
+app.get("/top250", (req, res) => {
     res.status(200).send(top250_data)
     //API call for top 250 movies
-    // axios.get("https://imdb-api.com/en/API/Top250Movies/+ process.env.IMBD_KEY, {}).then((response) => {
-    //     console.dir(response)
+    // axios.get("https://imdb-api.com/en/API/Top250Movies/" + process.env.IMBD_KEY).then((response) => {
     //     res.status(200).send(response)
     // }).catch((error) => {
     //     console.dir(error)
@@ -3421,76 +2870,111 @@ app.get("/top250", checkAuth, (req, res) => {
     // })
 })
 
+/**
+ * GET request endpoint to /search/:movie_name that will make an API call to search for a movie based on its name
+ * The movie title will be received as a parameter
+ * returns an array of movie objects
+ */
 app.get("/search/:movie_name", checkAuth, (req, res) => {
     var movie_name = req.params.movie_name;
     console.log(movie_name)
-    res.status(200).send(search_data)
-    // axios.get("https://imdb-api.com/en/API/SearchMovie/" + process.env.IMBD_KEY + "/" + movie_name, {}).then((response) => {
-    //     console.dir(response)
-    //     res.status(200).send(response.data)
-    // }).catch((error) => {
-    //     console.dir(error)
-    //     res.status(500).send(error)
-    // })
+    // res.status(200).send(search_data)
+    axios.get("https://imdb-api.com/en/API/SearchMovie/" + process.env.IMBD_KEY + "/" + movie_name, {}).then((response) => {
+        res.status(200).send(response.data)
+    }).catch((error) => {
+        console.dir(error)
+        res.status(500).send(error)
+    })
 })
 
+/**
+ * GET request endpoint to /movie/:movie_id that will make an API call to obtain movie information of the given movie id
+ * The movie id will be received as a parameter
+ * returns an object with all the movie information
+ */
 app.get("/movie/:movie_id", checkAuth, (req, res) => {
     var movie_id = req.params.movie_id;
-    res.status(200).send(title_data)
-    // axios.get("https://imdb-api.com/en/API/Title/" + process.env.IMBD_KEY + "/" + movie_id, {}).then((response) => {
-    //     console.dir(response)
-    //     res.status(200).send(response.data)
-    // }).catch((error) => {
-    //     console.dir(error)
-    //     res.status(500).send(error)
-    // })
+    // res.status(200).send(title_data)
+
+    axios.get("https://imdb-api.com/en/API/Title/" + process.env.IMBD_KEY + "/" + movie_id, {}).then((response) => {
+        res.status(200).send(response.data)
+    }).catch((error) => {
+        console.dir(error)
+        res.status(500).send(error)
+    })
 })
+
+/**
+ * GET request endpoint to /images/:movie_id that will make an API call to obtain images of the given movie id
+ * The movie id will be received as a parameter
+ * returns an object with all the movie images in an array
+ */
 
 app.get("/images/:movie_id", checkAuth, (req, res) => {
     var movie_id = req.params.movie_id;
-    res.status(200).send(image_data)
-    // axios.get("https://imdb-api.com/en/API/Images/" + process.env.IMBD_KEY + "/" + movie_id + "/Short", {}).then((response) => {
-    //     console.dir(response)
-    //     res.status(200).send(response.data)
-    // }).catch((error)=>{
-    //     console.dir(error)
-    //     res.status(500).send(error)
-    // })
+
+    axios.get("https://imdb-api.com/en/API/Images/" + process.env.IMBD_KEY + "/" + movie_id + "/Short", {}).then((response) => {
+        res.status(200).send(response.data)
+    }).catch((error)=>{
+        console.dir(error)
+        res.status(500).send(error)
+    })
 })
 
 //DATABASE FUNCTIONS
+
+/**
+ * POST request endpoint to /watchlist/add to add a movie to the users watchlist
+ * it receives as parameter the user_id, the movie_id and image of the movie added to the watchlist
+ * returns a success or error message
+ */
 app.post("/watchlist/add", (req, res) => {
+  //filter by user_id of the current user
   let filter = {
     "_id": req.query._id
   }
+  //values to be added to the array (watchlist)
+  //query that adds that object to the movies array
   let new_vals = { $push: { 'movies': {movie_id: req.query.movie_id, image: req.query.image}}}
   
   collection.updateOne(filter, new_vals, (err, response) =>{
     if(err){
-      console.log("cannot add movie")
+      console.log("Cannot add movie.")
       return res.status(404).send(err)
     }else{
-      console.log("movie added successfully")
+      console.log("Movie" + req.query.movie_id + "added successfully!")
       return res.status(200).send(response);
     }
   })
 })
 
+/**
+ * POST request endpoint to /watchlist/:uid to create a watchlist for that given user_id
+ * receives as parameter the user_id
+ * returns a success or error response
+ */
 app.post("/watchlist/:uid", (req, res) => {
+  //filter by user_id of the current user
   let obj = {
     "_id": req.params.uid,
   }
   collection.insertOne(obj, (err, response) =>{
     if(err){
-      console.log("user already has a watchlist")
+      console.log("User already has a watchlist.")
     }else{
-      console.log("user " + obj._id + "created successfully")
+      console.log("User " + obj._id + "created successfully")
       return res.status(200).send(response);
     }
   })
 })
 
+/**
+ * GET request endpoint to /watchlist/:uid to receive the user's watchlist
+ * receives as parameter the user_id
+ * returns an array with a single object, which contains the user_id and the array of movies (watchlist)
+ */
 app.get("/watchlist/:uid", (req, res) => {
+  //filter by user_id of the current user
   let filter = {
     _id: req.params.uid
   }
@@ -3500,9 +2984,15 @@ app.get("/watchlist/:uid", (req, res) => {
   });
 })
 
+/**
+ * GET request endpoint to /watchlist to check whether a movie is in a watchlist from a given user
+ * receives as parameter the user_id, and the id of the movie that needs to be checked 
+ * returns true if the movie is in the watchlist, false if the movie is not in the watchlist
+ */
 app.get("/watchlist", (req, res) => {
   let filter = {
     _id: req.query.uid,
+    //query to check for a movie in the array
     movies: {$elemMatch : {movie_id : req.query.movie_id}}
   }
   collection.find(filter).toArray(function(err, array) {
@@ -3516,18 +3006,25 @@ app.get("/watchlist", (req, res) => {
   });
 })
 
-//collection.insertOne()
+/**
+ * DELETE request endpoint to /watchlist to remove a movie in a watchlist from a given user
+ * receives as parameter the user_id, and the id of the movie that needs to be removed
+ * returns a success or error response
+ */
 app.delete("/watchlist", (req, res) => {
+  //filter by user_id of the current user
   let filter = {
     _id: req.query.uid
   }
+  //values to be removed to the array (watchlist)
+  //query removes adds that object from the movies array
   let new_vals = { $pull: { 'movies': {movie_id: req.query.movie_id}}}
   collection.updateOne(filter, new_vals, (err, response) =>{
     if(err){
-      console.log("movie was not removed")
+      console.log("Movie was not removed.")
       return res.status(404).send(err)
     }else{
-      console.log("movie removed successfully")
+      console.log("Movie removed successfully")
       return res.status(200).send(response);
     }
   })

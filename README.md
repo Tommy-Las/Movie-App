@@ -1,13 +1,51 @@
-# Final Project
-## COT 4930 - Full Stack Web Development
+# Final Project - My Movie Web App by Tommy Las
 
-To clone this repository:
-1. Open a terminal or command prompt Window
-2. Use the `cd` command to change the directory/folder you want to save this repository to
-3. Click on the green "Code" button in GitHub and copy the clone URL
-4. In your terminal/command prompt, use the `git clone` command, followed the URL copied above.
+This is a movie website where the user will be able to search for their favorite movie using the searchbar, or access the top 250 movies of all time. 
+
+By clicking on a movie, all the movie information will be displayed, such as full title, year it was released, director, main cast, imbd rating, lenght of the movie and a small description. Also it will display images of the movie and its cast.
+
+The user will can add a movie to their watchlist for future reference. You can access your watchlist using the navigation bar, and by clicking a movie you will be able to remove it from your watchlist.
 
 
-If you have any questions or need assistance, ask in the Discord server.
+### Dependencies
 
-**Don't forget to update the README.md file before submission!!**
+* NodeJS v16.14.2
+* React @latest
+* Mongo v5.0.6
+
+### Node Packages
+
+Backend:
+* express
+* mongoDB
+* firebase-admin
+* body-parser
+* axios
+
+Frontend:
+* react-bootstrap
+* axios
+* firebase
+* react-icons
+
+### First install these packages by typing this in the terminal
+
+```
+npm i (name of package)
+````
+
+### Then execute the program:
+
+
+* Run This in frontend folder terminal
+
+
+```
+npm start
+```
+* Run this in backend folder terminal
+
+```
+node studentserver.js
+```
+
