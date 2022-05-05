@@ -29,7 +29,7 @@ function SearchMovie(){
                 movies_array = response.data.results.map((movie) => {
                     //there are movies with no pictures, so only display movies that include a picture
                     if(!movie.image.includes("nopicture")) {
-                        return (<Link to={"/movie"} state={{id:movie.id}} className="movie">
+                        return (<Link to={"/movie"} state={{movie_id:movie.id}} className="movie">
                         <Figure>
                         <Figure.Image
                             className="border border-light effect"

@@ -22,7 +22,9 @@ function Top250(props){
     const sendRequest = () => {
         getIdToken(auth.currentUser).then((token)=>{
             axios.get("http://localhost:5888/top250", {headers: {Authorization: token}}).then((response) => {
-                var movies_array = response.data.items.map((movie) => {
+                console.log(response)
+
+                var movies_array = response.data.map((movie) => {
                     return (
                     <Link to={"/movie"} state={{movie_id:movie.id}} key={movie.id}>
                     <Figure className="movie">

@@ -30,6 +30,7 @@ function SingleMovie(props){
 
     let user_id = props.user_id
     let movie_id = useLocation().state.movie_id
+    console.log(movie_id)
     let [watchlistButton, setWatchlistButton] = useState('')
 
     let auth = getAuth()
