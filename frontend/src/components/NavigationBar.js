@@ -5,10 +5,22 @@ import { signOut, getAuth } from "firebase/auth";
 import {BsSearch} from "react-icons/bs"
 import image from "./logo.png"
 
+/**
+ * Navigation bar component that contains:
+ * -A search bar
+ * -Top250 access
+ * -Watchlist Access
+ * -Logout
+ * 
+ * @param {object} props component parameter
+ * 
+ * @returns the navigation var
+ */
 const NavigationBar = (props) => {
-  let username = props.username
+  //user picture that will be used for the logout button
   let user_photo = props.user_photo
 
+  //use state hook for the searched value
   let [searchValue, setSearchValue] = useState("")
   const navigate = useNavigate();
   
@@ -17,6 +29,7 @@ const NavigationBar = (props) => {
   const logOut = () => {
     signOut(auth).then(() => {
         // Sign-out successful.
+        //I used navigate to load the home page
         navigate("/")
         console.log('User logged out successfuly')
     }).catch((error) => {
@@ -24,6 +37,13 @@ const NavigationBar = (props) => {
         console.log('Cannot log user out')
     });
 }
+
+  /**
+   * 
+   * Will navigate to the movies path and will be given as a parameter the search value
+   * It will be pased using the state property from the router
+   * @param {event} e 
+   */
   const searchMovieRequest = (e) => {
     e.preventDefault()
     navigate('/movies', {state:{movie: searchValue}})

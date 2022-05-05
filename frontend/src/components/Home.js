@@ -3,7 +3,8 @@ import {Container} from 'react-bootstrap';
 import createUserWatchlist from './createUserWatchlist.js';
 
 /**
- * Home page that displays a title and my information
+ * Home page component that displays a title and my information
+ * It will also import the createUserWatchlist function to create a watchlist for the user that just logged in
  * 
  * @returns the whole home html page
  */

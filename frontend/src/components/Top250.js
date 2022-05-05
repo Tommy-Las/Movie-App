@@ -5,12 +5,20 @@ import {Link} from 'react-router-dom'
 import { getIdToken, getAuth } from 'firebase/auth';
 
 
-
+/**
+ * Will make a GET request to /top250 to make an API call to request all top 250 movies
+ * It will return an array of movies which will be modified using .map so it could be displayed on the page
+ * @param {Object} props component parameters
+ * @returns the page with all the top 250 movies 
+ */
 function Top250(props){
     let [movies, setMovies] = useState('')
     
     let auth = getAuth()
 
+    /**
+     * get the token to send to server as a header and do the GET request
+     */
     const sendRequest = () => {
         getIdToken(auth.currentUser).then((token)=>{
             axios.get("http://localhost:5888/top250", {headers: {Authorization: token}}).then((response) => {

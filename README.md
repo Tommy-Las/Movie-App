@@ -27,6 +27,7 @@ Frontend:
 * axios
 * firebase
 * react-icons
+* react-google-button
 
 ### First install these packages by typing this in the terminal
 
