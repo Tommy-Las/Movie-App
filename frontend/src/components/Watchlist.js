@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Figure, Container } from 'react-bootstrap'
+import { getIdToken, getAuth } from 'firebase/auth';
 
 /**
  * make a GET request to /watchlist/:user_id to get all the movies in the users's watchlist 
@@ -16,25 +17,30 @@ function Watchlist(props){
     let movies_array = []
     let [movies, setMovies] = useState('')
 
+    let auth = getAuth()
+
     useEffect(()=>{
-        axios.get('http://localhost:5888/watchlist/' + user_id).then((res) => {
-        movies_array = res.data[0].movies
-        //console.log(movies_array)
-        movies_array = movies_array.map((movie)=> {
-            return (<Link to={"/movie"} state={{movie_id: movie.movie_id}} key={movie.image}>
-                <Figure className="movie">
-                <Figure.Image
-                    className="border border-light effect"
-                    width={171}
-                    height={180}
-                    src={movie.image}
-                />
-                <Figure.Caption>
-                </Figure.Caption>
-                </Figure>
-            </Link>)
+        getIdToken(auth.currentUser).then((token)=>{
+            axios.get('http://localhost:5888/watchlist/' + user_id, {headers: {Authorization: token}}).then((res) => {
+                movies_array = res.data[0].movies
+                
+                movies_array = movies_array.map((movie)=> {
+                    return (<Link to={"/movie"} state={{movie_id: movie.movie_id}} key={movie.image}>
+                        <Figure className="movie">
+                        <Figure.Image
+                            className="border border-light effect"
+                            width={171}
+                            height={180}
+                            src={movie.image}
+                        />
+                        <Figure.Caption>
+                        </Figure.Caption>
+                        </Figure>
+                    </Link>)
+                    
+                })
+                setMovies(movies_array)  
         })
-        setMovies(movies_array)
     }).catch((err)=>{console.log(err)})
     }, [])
 

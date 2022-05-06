@@ -211,7 +211,7 @@ app.post("/watchlist/:uid", (req, res) => {
  * receives as parameter the user_id
  * returns an array with a single object, which contains the user_id and the array of movies (watchlist)
  */
-app.get("/watchlist/:uid", (req, res) => {
+app.get("/watchlist/:uid", checkAuth, (req, res) => {
   //filter by user_id of the current user
   let filter = {
     _id: req.params.uid
