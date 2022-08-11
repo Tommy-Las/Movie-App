@@ -45,10 +45,12 @@ function Watchlist(props){
     }, [])
 
     return(
-        <Container>
+        <>
             <h1 className="page_title">My Watchlist</h1>
-            {movies}
-        </Container>
+            <div className="movies-container">
+                {movies} 
+            </div>
+        </>
     );
 }
 

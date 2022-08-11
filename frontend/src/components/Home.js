@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import {Container} from 'react-bootstrap';
-import createUserWatchlist from './createUserWatchlist.js';
+import createUserWatchlist from '../functions/createUserWatchlist.js';
 
 /**
  * Home page component that displays a title and my information

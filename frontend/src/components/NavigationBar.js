@@ -51,41 +51,42 @@ const NavigationBar = (props) => {
 
   return (
     <>
-      <Navbar collapseOnSelect variant="dark" className="navbar">
-        <Container>
-          <Navbar.Brand as={Link} to='/' className="logo">
+      <Navbar collapseOnSelect expand='lg' className="navbar" variant="dark">
+        <Container fluid>
+          <Navbar.Brand as={Link} to='/' className="navbar-brand">
             <img
             src={image}
             className="align-top logo"
             alt="logo"/>
-          </Navbar.Brand>
-          <Navbar.Brand as={Link} to='/' className='logo-title'>
+            <h1 as={Link} to='/' className='logo-title'>
             Bear Movies
-          </Navbar.Brand> 
+           </h1> 
+          </Navbar.Brand>
           <Navbar.Toggle/>
-          <Navbar.Collapse>
-            <Nav className="me-auto ms-5">
-              <InputGroup>
-              <FormControl
-                placeholder="Search"
-                value = {searchValue}
-                onChange={(e) => { setSearchValue(e.target.value) }}
-              />
-              <Button variant="outline-secondary" onClick={searchMovieRequest}>
-                <BsSearch/>
-              </Button>
-              </InputGroup>
-            </Nav>
-            <Nav className="me-3">
-              <Nav.Link as={Link} to='/top250'>Top 250 Movies</Nav.Link>
-              <Nav.Link as={Link} to='/watchlist'>My Watchlist</Nav.Link>
-            </Nav>
-            <Nav className="me-5">
-            <NavDropdown title={<img className='user_image' src={user_photo} alt='user photo'/>}>
-                  <NavDropdown.Item onClick={logOut}>Logout</NavDropdown.Item>
-            </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
+            <Navbar.Collapse className='nav-items-container'>
+              <Nav className='nav-items'>
+                <InputGroup>
+                <FormControl
+                  placeholder="Search"
+                  value = {searchValue}
+                  className='search-input'
+                  onChange={(e) => { setSearchValue(e.target.value) }}
+                />
+                <Button className="search-btn" onClick={searchMovieRequest}>
+                  <BsSearch/>
+                </Button>
+                </InputGroup>
+              </Nav>
+              <Nav className="nav-items">
+                <Nav.Link className='nav-btn'as={Link} to='/top250'>Top 250 Movies</Nav.Link>
+                <Nav.Link className='nav-btn' as={Link} to='/watchlist'>My Watchlist</Nav.Link>
+              </Nav>
+              <Nav className="last-nav-item">
+                <NavDropdown title={<img className='user_image' src={user_photo} alt=''/>}>
+                      <NavDropdown.Item onClick={logOut}>Logout</NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+            </Navbar.Collapse>
         </Container>
       </Navbar>
       <Outlet />

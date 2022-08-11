@@ -2,11 +2,14 @@ import {useLocation} from 'react-router-dom'
 import {Container, Col, Figure, Row, Carousel, Button} from 'react-bootstrap'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import addMovieWatchlist from './addMovieWatchlist'
-import removeMovieWatchlist from './removeMovieWatchlist'
-import movieInWatchlist from './movieInWatchlist'
+import addMovieWatchlist from '../functions/addMovieWatchlist'
+import removeMovieWatchlist from '../functions/removeMovieWatchlist'
+import movieInWatchlist from '../functions/movieInWatchlist'
 import { BsStarFill } from "react-icons/bs";
+import {IoClose , IoAdd} from "react-icons/io5";
 import {getAuth, getIdToken} from 'firebase/auth'
+import AddToWatchlistButton from './AddToWatchlistButton'
+import RemoveFromWatchlistButton from './RemoveFromWatchlistButton'
 
 /**
  * 
@@ -99,9 +102,7 @@ function SingleMovie(props){
 
     const removeMovie = () => {
         removeMovieWatchlist(user_id, movie_id)
-        setWatchlistButton(<Button variant="success" onClick={() => {addMovie()}}>
-                    ADD TO MY WATCHLIST
-                    </Button>)
+        setWatchlistButton(<AddToWatchlistButton />)
     };
 
     /**
@@ -110,7 +111,7 @@ function SingleMovie(props){
      */
     const addMovie = () => {
         addMovieWatchlist(user_id, movie_id, main_image)
-        setWatchlistButton(<Button variant="danger" onClick={() => {removeMovie()}}>REMOVE FROM MY WATCHLIST</Button>)
+        setWatchlistButton(<RemoveFromWatchlistButton />)
     }
 
     //send request once when page loads
@@ -126,49 +127,39 @@ function SingleMovie(props){
             console.log(res)
             //if movie is in the watchlist
             if(res){
-                setWatchlistButton(<Button variant="danger" onClick={() => {removeMovie()}}>
-                    REMOVE FROM MY WATCHLIST
-                    </Button>)
+                setWatchlistButton(<RemoveFromWatchlistButton />)
             } else{
-                setWatchlistButton(<Button variant="success" onClick={() => {addMovie()}}>
-                    ADD TO MY WATCHLIST
-                    </Button>)
+                setWatchlistButton(setWatchlistButton(<AddToWatchlistButton />))
             }
         })
     }, [])
 
     return(
-        <div>
-            <Container fluid className="margin-top">
+        <div className='movie-box'>
+            <Container fluid>
+                <div className='watchlist-btn-position'>
+                </div>
                 <Row>
                     <Col className="poster_column">
                         <Row>
                         <Figure>
                             <Figure.Image
-                                width={380}
-                                height={380}
+                                width={320}
+                                height={320}
                                 src={poster}
                             />
                             <Figure.Caption className="minutes">
-                                {watchlistButton}
+                                {minutes + " mins"}
                             </Figure.Caption>
                         </Figure>
                         </Row>
                     </Col>
                     <Col className="info_column">
-                        <h1>{fullTitle}</h1>
+                        <h1>{fullTitle}{watchlistButton}</h1>
                         <h4>{"Directed by " + director}</h4><br/>
                         <p>{"Main Cast: " + stars}</p>
                         <p>{"Genre: " + genre}</p>
-                        <Row>
-                            <Col xs={3}>
-                                <p><span><BsStarFill/></span>{" IMBd Rating: " + rating}</p>
-                            </Col>
-                            <Col>
-                                <p>{ minutes + " mins"}</p>
-                            </Col>
-                        </Row>
-                        
+                        <p><BsStarFill id='imbd-star'/>{" IMBd Rating: " + rating}</p>
                         <p className='description'>{description}</p>
                         <div className='carousel_container'>
                             <Carousel  className = "carousel">

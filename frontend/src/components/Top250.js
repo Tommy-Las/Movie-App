@@ -49,10 +49,12 @@ function Top250(props){
     }, [])
 
     return(
-        <div>
+        <>
             <h1 className="page_title">Top 250 Movies of All Time</h1>
-            {movies}   
-        </div>
+            <div className="movies-container">
+                {movies} 
+            </div>
+        </>
     );
 }
 
