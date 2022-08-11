@@ -9,9 +9,7 @@ import axios from 'axios'
  * @param {string} movie_id 
  * @param {string} image 
  */
-function addMovieWatchlist (user_id, movie_id, image) {
-    console.log('in add movie function. the movie id is: ' + movie_id + "poster is " + image)
-    
+function addMovieWatchlist (user_id, movie_id, image) {    
     let obj = {
         _id: user_id,
         movie_id : movie_id,
