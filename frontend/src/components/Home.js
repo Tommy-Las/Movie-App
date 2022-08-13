@@ -12,8 +12,10 @@ import createUserWatchlist from '../functions/createUserWatchlist.js';
  
 function Home(props){
 
-    createUserWatchlist(props.user_id)
-
+    useEffect(() => {
+        createUserWatchlist(props.user_id)
+    })
+    
     return (
             <div className='home'>
                 <h1>Welcome to Bear Movies!</h1>

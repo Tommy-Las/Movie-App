@@ -6,47 +6,27 @@
   box-sizing: border-box;
 }
 
-
-
+html {
+    min-height: 100%;
+ }
 
 body{
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: rgb(255, 255, 255);
+
     background-color: #101318;
     background-image: url('./components/rocky.png');
     background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center; 
-    height: 100vh;
+    background-size:cover;
+    background-position:center; 
+    height: 100%;
 }
-
-.movies_row{
-    margin-left: 35px;
-    margin-bottom:5px;
-}
-
-
-
-
-
-
-.page_title{
-    text-align: center;
-    margin-bottom: 25px;
-    margin-top:25px;
-}
-
+    
 .google_button {
     display: flex;
     justify-content: center;
     margin-top: 400px;
 }
-
-.button {
-    text-align: center;
-}
-
-
 
 /* Home */
 
@@ -108,22 +88,6 @@ body{
     height: 60px;
 }
 
-.search-input{
-    max-width: 400px;
-}
-
-/* Search Button Navbar*/
-
-.search-btn {
-    background-color: #171937;
-    border-color: #fff;
-}
-
-.search-btn:hover {
-    background-color: #1f224a;
-    border-color: #aaa;
-}
-
 .nav-items-container{
     display: flex;
     justify-content: right;
@@ -137,6 +101,28 @@ body{
     margin-right: 100px;
 }
 
+/* Search Button Navbar*/
+
+.search-btn {
+    background-color: #171937;
+    border-color: #fff;
+}
+
+.search-input{
+    max-width: 400px;
+    
+}
+
+.search-input::focus{
+    outline: none !important;
+    outline-width: 0 !important;
+}
+
+.search-btn:hover {
+    background-color: #1f224a;
+    border-color: #aaa;
+}
+
 /* Movies Page */
 
 .movie{
@@ -146,8 +132,14 @@ body{
 .movies-container{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content:flex-start;
     margin: 0px 45px;
+}
+
+.page_title{
+    text-align: center;
+    margin-bottom: 25px;
+    margin-top:25px;
 }
 
 /* Single Movie Page */
@@ -204,24 +196,24 @@ body{
     color: rgb(191, 191, 191)   ;
 }
 
+
+/* Carousel */
+
 .carousel_container{
-    margin-top: 25px;
+    margin-top: 30px;
     display: flex;
     height: 320px;
     justify-content: center;
-    overflow: hidden;
-    
+    overflow: hidden;    
 }
 .carousel{
-    width: 80%;
-    height: 100%;
+    max-width: 520px;
+    width: 100%;
 }
 
 .carousel_image{
   width: 100%;
-  max-height: 100%;
-  height: 320px;
-  display: block;
+  height: 100%;
 }
 
 /* Remove & Add buttons */
@@ -229,6 +221,7 @@ body{
 .watchlist-btn{
     font-size: 12px;
     padding: 8px;
+    text-transform: uppercase;
 }
 
 .icon{
@@ -276,5 +269,23 @@ body{
 
     .movies-container{
         justify-content: center;
+    }
+
+    .movie-box{
+        display: block;
+        margin: 40px;
+    }
+
+    .info_column h1 {
+        font-size: 26px;
+    }
+    
+    .info_column h4 {
+        font-size: 18px;
+        color: rgb(191, 191, 191);
+    }
+
+    .info_column p {
+        font-size: 14px;
     }
 }

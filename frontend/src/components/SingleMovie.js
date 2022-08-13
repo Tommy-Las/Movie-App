@@ -8,8 +8,6 @@ import movieInWatchlist from '../functions/movieInWatchlist'
 import { BsStarFill } from "react-icons/bs";
 import {IoClose , IoAdd} from "react-icons/io5";
 import {getAuth, getIdToken} from 'firebase/auth'
-import AddToWatchlistButton from './AddToWatchlistButton'
-import RemoveFromWatchlistButton from './RemoveFromWatchlistButton'
 
 /**
  * 
@@ -30,25 +28,23 @@ import RemoveFromWatchlistButton from './RemoveFromWatchlistButton'
  * @returns the single movie page
  */
 function SingleMovie(props){
-
-    let user_id = props.user_id
-    let movie_id = useLocation().state.movie_id
-    console.log(movie_id)
-    let [watchlistButton, setWatchlistButton] = useState('')
-
-    let auth = getAuth()
+    const user_id = props.user_id
+    const movie_id = useLocation().state.movie_id
+    const auth = getAuth()
+    let main_image = ''
     
     //set all variables
-    let [fullTitle, setFullTitle] = useState('')
-    let [director, setDirector] = useState('')
-    let [stars, setStars] = useState('')
-    let [rating, setRating] = useState('')
-    let [genre, setGenre] = useState('')
-    let [description, setDescription] = useState('')
-    let main_image = ''
-    let [poster, setPoster] = useState('')
-    let [minutes, setMinutes] = useState('')
-    let [images, setImages] = useState('')
+    const [fullTitle, setFullTitle] = useState('')
+    const [director, setDirector] = useState('')
+    const [stars, setStars] = useState('')
+    const [rating, setRating] = useState('')
+    const [genre, setGenre] = useState('')
+    const [description, setDescription] = useState('')
+    const [poster, setPoster] = useState('')
+    const [minutes, setMinutes] = useState('')
+    const [images, setImages] = useState('')
+    const [watchlistButton, setWatchlistButton] = useState('')
+
 
     /**
      * First, we need to get the id token of the user and will be sent as a header to the backend
@@ -66,8 +62,8 @@ function SingleMovie(props){
                 setStars(response.data.stars);
                 setRating(response.data.imDbRating);
                 setGenre(response.data.genres);
-                main_image=response.data.image
                 setPoster(response.data.image);
+                main_image = response.data.image
                 setMinutes(response.data.runtimeMins);
                 setDescription(response.data.plot);
             }).catch((err)=>{
@@ -95,14 +91,21 @@ function SingleMovie(props){
         
     }
 
+    //send request once when page loads
+    useEffect( () => {
+        sendRequest()
+    }, [])
+
     /**
      * Will call the removeMovieWatchlist function to remove the given movie from the watchlist
      * and it will set the button so the user can add the movie to the watchlist
      */
-
     const removeMovie = () => {
         removeMovieWatchlist(user_id, movie_id)
-        setWatchlistButton(<AddToWatchlistButton />)
+        setWatchlistButton(
+        <Button className='watchlist-btn'  variant="success" onClick={() => {addMovie()}}>
+        Add to Watchlist<IoAdd className='icon' />
+        </Button>)
     };
 
     /**
@@ -111,25 +114,27 @@ function SingleMovie(props){
      */
     const addMovie = () => {
         addMovieWatchlist(user_id, movie_id, main_image)
-        setWatchlistButton(<RemoveFromWatchlistButton />)
+        setWatchlistButton(
+        <Button className='watchlist-btn' variant="danger" onClick={() => {removeMovie()}}>
+            Remove from Watchlist<IoClose className="icon" />
+         </Button>)
     }
-
-    //send request once when page loads
-    useEffect( () => {
-        sendRequest()
-    }, [])
-
 
     //when page loads it will check by running the movieInWatchlist function 
     //to check whether the movie is in the watchlist or not
     useEffect(()=>{
         movieInWatchlist(user_id, movie_id).then((res) => {
-            console.log(res)
-            //if movie is in the watchlist
             if(res){
-                setWatchlistButton(<RemoveFromWatchlistButton />)
-            } else{
-                setWatchlistButton(setWatchlistButton(<AddToWatchlistButton />))
+                setWatchlistButton(
+                <Button className='watchlist-btn' variant="danger" onClick={() => {removeMovie()}}>
+                    Remove from Watchlist<IoClose className="icon" />
+                </Button>)
+            }
+            else{
+                setWatchlistButton(
+                <Button className='watchlist-btn'  variant="success" onClick={() => {addMovie()}}>
+                    Add to Watchlist<IoAdd className='icon' />
+                </Button>)
             }
         })
     }, [])
@@ -155,20 +160,21 @@ function SingleMovie(props){
                         </Row>
                     </Col>
                     <Col className="info_column">
-                        <h1>{fullTitle}{watchlistButton}</h1>
+                        <h1>{fullTitle}</h1>
                         <h4>{"Directed by " + director}</h4><br/>
                         <p>{"Main Cast: " + stars}</p>
                         <p>{"Genre: " + genre}</p>
                         <p><BsStarFill id='imbd-star'/>{" IMBd Rating: " + rating}</p>
                         <p className='description'>{description}</p>
-                        <div className='carousel_container'>
-                            <Carousel  className = "carousel">
-                                {images}
-                            </Carousel>
-                        </div>
-                            
+                        <br />
+                        {watchlistButton}
                     </Col>
                 </Row>
+                <div className='carousel_container'>
+                    <Carousel  className = "carousel">
+                        {images}
+                    </Carousel>
+                </div>
             </Container>
         </div>
     );

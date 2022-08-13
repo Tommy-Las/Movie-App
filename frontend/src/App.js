@@ -48,7 +48,7 @@ function App() {
   });
 
   return (
-    <div className="App">
+    <div className="App bg">
       {user ? (<BrowserRouter>
       <Routes>
         <Route path="/" element={<NavigationBar user_photo={photo}/>} >

@@ -66,15 +66,15 @@ const NavigationBar = (props) => {
             <Navbar.Collapse className='nav-items-container'>
               <Nav className='nav-items'>
                 <InputGroup>
-                <FormControl
-                  placeholder="Search"
-                  value = {searchValue}
-                  className='search-input'
-                  onChange={(e) => { setSearchValue(e.target.value) }}
-                />
-                <Button className="search-btn" onClick={searchMovieRequest}>
-                  <BsSearch/>
-                </Button>
+                  <FormControl
+                    placeholder="Search"
+                    value = {searchValue}
+                    className='search-input'
+                    onChange={(e) => { setSearchValue(e.target.value) }}
+                  />
+                  <Button className="search-btn" onClick={searchMovieRequest}>
+                    <BsSearch/>
+                  </Button>
                 </InputGroup>
               </Nav>
               <Nav className="nav-items">
