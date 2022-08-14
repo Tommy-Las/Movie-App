@@ -21,7 +21,7 @@ function Top250(props){
      */
     const sendRequest = () => {
         getIdToken(auth.currentUser).then((token)=>{
-            axios.get("https://bearmovies.netlify.app/top250", {headers: {Authorization: token}}).then((response) => {
+            axios.get("https://bearmovies.herokuapp.com/top250", {headers: {Authorization: token}}).then((response) => {
                 console.log(response)
 
                 var movies_array = response.data.map((movie) => {

@@ -21,7 +21,7 @@ function Watchlist(props){
 
     useEffect(()=>{
         getIdToken(auth.currentUser).then((token)=>{
-            axios.get('https://bearmovies.netlify.app/watchlist/' + user_id, {headers: {Authorization: token}}).then((res) => {
+            axios.get('https://bearmovies.herokuapp.com/watchlist/' + user_id, {headers: {Authorization: token}}).then((res) => {
                 movies_array = res.data[0].movies
                 
                 movies_array = movies_array.map((movie)=> {
