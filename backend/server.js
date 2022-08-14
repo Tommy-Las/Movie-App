@@ -80,7 +80,7 @@ app.use(function (req, res, next) {
 }
 
   //connect to database globally
-  MongoClient.connect(`mongodb://${process.env.MONGODB_HOSTNAME}:${process.env.MONGODB_PORT}/`, (err, client) => {
+  MongoClient.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@bear-movies.0gpaj6o.mongodb.net/?retryWrites=true&w=majority` , (err, client) => {
     if (err) {
         console.error("Unable to connect to MongoDB: ", err.message);
         throw err; // exits program - mongo error
