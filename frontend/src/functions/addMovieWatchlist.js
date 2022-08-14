@@ -16,7 +16,9 @@ function addMovieWatchlist (user_id, movie_id, image) {
         image: image
     }
 
-    axios.post('http://localhost:5888/watchlist/add', null, {params: obj}).then((res) => {
+    //https://bearmovies.herokuapp.com/watchlist/add
+    //http://localhost:5888/watchlist/add
+    axios.post('https://bearmovies.herokuapp.com/watchlist/add', null, {params: obj}).then((res) => {
         console.log(res)
     }).catch((err)=>{console.log(err)})
 }

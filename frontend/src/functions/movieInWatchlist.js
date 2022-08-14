@@ -8,6 +8,9 @@ import axios from 'axios'
  * @param {string} movie_id 
  * @returns true if the movies is in the watchlist, false if the movie is not
  */
+
+//https://bearmovies.herokuapp.com/watchlist
+//http://localhost:5888/watchlist
 async function movieInWatchlist (user_id, movie_id) {
     let myPromise = new Promise((resolve, reject) => {
         console.log('in check movie function. the movie id is: ' + movie_id)
@@ -15,7 +18,7 @@ async function movieInWatchlist (user_id, movie_id) {
             uid: user_id,
             movie_id : movie_id,
         }
-        axios.get('http://localhost:5888/watchlist', {params: obj}).then((res)=>{
+        axios.get('https://bearmovies.herokuapp.com/watchlist', {params: obj}).then((res)=>{
             resolve(res.data);
             }).catch((err)=>{
                 console.log(err)

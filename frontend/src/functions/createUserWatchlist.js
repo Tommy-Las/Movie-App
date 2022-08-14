@@ -8,9 +8,13 @@ import axios from 'axios'
  * @param {string} movie_id 
  * @param {string} image 
  */
+
+
+//https://bearmovies.herokuapp.com/watchlist/
+//http://localhost:5888/watchlist/
 function createUserWatchlist (user_id) {
     let obj = {uid: user_id}
-    axios.post('http://localhost:5888/watchlist/' + user_id).then((res) => {
+    axios.post('https://bearmovies.herokuapp.com/watchlist/' + user_id).then((res) => {
         console.log(res)
     }).catch((err)=>{console.log(err)})
 }
