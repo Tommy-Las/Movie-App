@@ -53,9 +53,14 @@ function SingleMovie(props){
      * One GET request to /movie/:movie_id to get the information of the given movie_id
      * The other GET request to /images/:movie_id to get the images of the given movie_id
      */
+
+    //https://bearmovies.netlify.app/movie/
+    //http://localhost:5888/movie/
+
     const sendRequest = () => {
+
         getIdToken(auth.currentUser).then((token)=>{
-            axios.get("http://localhost:5888/movie/" + movie_id, {headers: {Authorization: token}}).then((response)=>{
+            axios.get("https://bearmovies.netlify.app/movie/" + movie_id, {headers: {Authorization: token}}).then((response)=>{
                 //set all use state hooks with the new information
                 setFullTitle(response.data.fullTitle);
                 setDirector(response.data.directors);
@@ -70,7 +75,7 @@ function SingleMovie(props){
                 console.dir(err)
             })
 
-            axios.get("http://localhost:5888/images/" + movie_id, {headers: {Authorization: token}}).then((response)=>{
+            axios.get("https://bearmovies.netlify.app/images/" + movie_id, {headers: {Authorization: token}}).then((response)=>{
                 var images_array = response.data.items.map((image_element) => {
                     //carousel item that contains the image
                     return(<Carousel.Item key={image_element.image}>

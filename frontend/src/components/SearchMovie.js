@@ -22,9 +22,13 @@ function SearchMovie(){
     /**
      * Get the token from the user and send it to the backend with the request
      */
+
+    //https://bearmovies.netlify.app/search/
+    //http://localhost:5888/search/
+
     const sendRequest = () => {
         getIdToken(auth.currentUser).then((token)=>{
-            axios.get("http://localhost:5888/search/" + movie_searched, {headers: {Authorization: token}}).then((response) => {
+            axios.get("https://bearmovies.netlify.app/search/" + movie_searched, {headers: {Authorization: token}}).then((response) => {
                 var movies_array = []
                 movies_array = response.data.results.map((movie) => {
                     //there are movies with no pictures, so only display movies that include a picture
