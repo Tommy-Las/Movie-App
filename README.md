@@ -6,6 +6,8 @@ By clicking on a movie, all the movie information will be displayed, such as ful
 
 The user will can add a movie to their watchlist for future reference. You can access your watchlist using the navigation bar, and by clicking a movie you will be able to remove it from your watchlist.
 
+it can be accessed [here](https://bearmovies.netlify.app)
+
 
 ### Dependencies
 
